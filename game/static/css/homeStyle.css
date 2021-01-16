@@ -5,5 +5,34 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 200%;
+    font-size: 400%;
+    margin-top: 20px;
+}
+
+.button {
+    border: 2px solid black;
+    color: black;
+    padding: 8px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+}
+
+.joinGameButton {
+    margin: 500px 0px;
+}
+
+.createGameButton {
+    margin: 600px 0px;
+}
+
+.horizontal-center {
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
 }
