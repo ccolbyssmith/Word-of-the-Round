@@ -1,9 +1,9 @@
 import os
 
 from flask import Flask
-#from flask_socketio import SocketIO
+from flask_socketio import SocketIO
 
-#socketio = SocketIO()
+socketio = SocketIO()
 
 
 def create_app(debug=False):
@@ -15,5 +15,5 @@ def create_app(debug=False):
     from .views import views as views
     app.register_blueprint(views)
 
-    #socketio.init_app(app)
+    socketio.init_app(app)
     return app
