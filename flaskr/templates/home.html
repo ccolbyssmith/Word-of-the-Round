@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Word of the Round</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+</head>
+<body>
+    <h1>Word of the Round</h1>
+    <span class="large-br"></span>
+    <form action="{{ url_for('views.readButton') }}" method="post">
+        <button class="center button" name="joinGameButton" value="joinGame">Join Game</button>
+        <br />
+        <span class="small-br"></span>
+        <button class="center button" name="createGameButton" value="createGame">Create Game</button>
+    </form>
+</body>
+</html>
