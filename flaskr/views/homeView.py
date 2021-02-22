@@ -10,16 +10,8 @@ def displayHomePage():
 def readButton():
     urlSuffix = ''
     if request.form.get('joinGameButton') == 'joinGame':
-        urlSuffix = '/joinGame'
+        urlSuffix = '/chatRoom'
     elif request.form.get('createGameButton') == 'createGame':
-        urlSuffix = '/createGame'
+        urlSuffix = '/chatRoom'
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
-
-@views.route('/joinGame')
-def JoinGame():
-    return 'Game Joined!'
-
-@views.route('/createGame')
-def createGame():
-    return 'Game Created!'
