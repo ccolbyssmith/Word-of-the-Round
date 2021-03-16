@@ -1,4 +1,7 @@
-	$(document).ready(function() {
+var myLobbyName = {{ myLobbyName|safe }}
+var myPlayerID = {{ myPlayerID|safe }}
+
+$(document).ready(function() {
             // Connect to the Socket.IO server.
             // The connection URL has the following format, relative to the current page:
             //     http[s]://<domain>:<port>[/<namespace>]
@@ -9,6 +12,8 @@
             // server is established.
             socket.on('connect', function() {
                 socket.emit('my_event', {data: 'I\'m connected!'});
+                socket.emit('join', {room: myLobbyName});
+                return false;
             });
 
             // Event handler for server sent data.
@@ -47,16 +52,12 @@
             // Handlers for the different forms in the page.
             // These accept data from the user and send it to the server in a
             // variety of ways
-            $('form#join').submit(function(event) {
-                socket.emit('join');
-                return false;
-            });
             $('form#leave').submit(function(event) {
-                socket.emit('leave');
+                socket.emit('leave', {room: 's'});
                 return false;
             });
             $('form#send').submit(function(event) {
-                socket.emit('my_room_event', {data: $('#message').val()});
+                socket.emit('message', {data: $('#room_data').val()});
                 return false;
             });
             $('form#disconnect').submit(function(event) {

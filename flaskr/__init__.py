@@ -11,6 +11,7 @@ lobbies = LobbyList()
 def create_app(debug=False):
     """Create an application."""
     app.config['TESTING'] = True
+    app.config['SECRET_KEY'] = 'This is a Secret'
     app.debug = debug
     from .home import home as home
     app.register_blueprint(home)
