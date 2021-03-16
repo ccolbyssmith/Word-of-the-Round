@@ -3,12 +3,11 @@ from flask import Flask, render_template, session, request, redirect, \
     copy_current_request_context
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-import random
-import uuid
 
 from .. import socketio
 from . import home
-from ..models import Player, Lobby, db
+from ..models import Lobby, Player
+from ..__init__ import lobbies
 thread = None
 thread_lock = Lock()
 
@@ -26,17 +25,14 @@ def readButton():
     if request.form.get('joinGameButton') == 'joinGame':
         urlSuffix = '/lobby'
         lobbyName = request.form.get('join_room')
-        myLobby = Lobby.query.filter_by(name=lobbyName).first()
+        myLobby = lobbies.findLobby(lobbyName=lobbyName)
     elif request.form.get('createGameButton') == 'createGame':
         urlSuffix = '/lobby'
-        lobbyName = str(uuid.uuid4()).split('-')[0] 
-        myLobby = Lobby(name=lobbyName)
-        db.session.add(myLobby)
-        db.session.commit()
+        myLobby = Lobby()
+        lobbies.addLobby(newLobby=myLobby)
     if request.form.get('joinGameButton') == 'joinGame' or request.form.get('createGameButton') == 'createGame':
-        myPlayer = Player(name=request.form.get('name'), lobby_id=myLobby.id)
-        db.session.add(myPlayer)
-        db.session.commit()
+        myPlayer = Player(name=request.form.get('name'))
+        lobbies.findLobby(lobbyName=myLobby.name).addPlayer(player=myPlayer)
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
 
