@@ -54,10 +54,14 @@ h1 {
 
 .large-br {
     display: block;
-    margin-bottom: 11em;
+    margin-bottom: 9em;
 }
 
-.small-br {
+.medium-br {
     display: block;
     margin-bottom: 7em;
+}
+.small-br {
+    display: block;
+    margin-bottom: 1em;
 }

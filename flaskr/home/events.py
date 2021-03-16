@@ -5,7 +5,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 
 from .. import socketio
-from . import views
+from . import home
 thread = None
 thread_lock = Lock()
 
@@ -17,27 +17,6 @@ def background_thread():
         count += 1
         socketio.emit('my_response',
                       {'data': 'Server generated event', 'count': count})
-
-
-@views.route('/chatRoom')
-def index():
-    return render_template('index.html', async_mode=socketio.async_mode)
-
-
-@socketio.event
-def my_event(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response',
-         {'data': message['data'], 'count': session['receive_count']})
-
-
-@socketio.event
-def my_broadcast_event(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response',
-         {'data': message['data'], 'count': session['receive_count']},
-         broadcast=True)
-
 
 @socketio.event
 def join(message):
@@ -55,15 +34,6 @@ def leave(message):
     emit('my_response',
          {'data': 'In rooms: ' + ', '.join(rooms()),
           'count': session['receive_count']})
-
-
-@socketio.on('close_room')
-def on_close_room(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response', {'data': 'Room ' + message['room'] + ' is closing.',
-                         'count': session['receive_count']},
-         to=message['room'])
-    close_room(message['room'])
 
 
 @socketio.event

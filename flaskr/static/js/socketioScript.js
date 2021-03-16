@@ -47,28 +47,16 @@
             // Handlers for the different forms in the page.
             // These accept data from the user and send it to the server in a
             // variety of ways
-            $('form#emit').submit(function(event) {
-                socket.emit('my_event', {data: $('#emit_data').val()});
-                return false;
-            });
-            $('form#broadcast').submit(function(event) {
-                socket.emit('my_broadcast_event', {data: $('#broadcast_data').val()});
-                return false;
-            });
             $('form#join').submit(function(event) {
-                socket.emit('join', {room: $('#join_room').val()});
+                socket.emit('join');
                 return false;
             });
             $('form#leave').submit(function(event) {
-                socket.emit('leave', {room: $('#leave_room').val()});
+                socket.emit('leave');
                 return false;
             });
-            $('form#send_room').submit(function(event) {
-                socket.emit('my_room_event', {room: $('#room_name').val(), data: $('#room_data').val()});
-                return false;
-            });
-            $('form#close').submit(function(event) {
-                socket.emit('close_room', {room: $('#close_room').val()});
+            $('form#send').submit(function(event) {
+                socket.emit('my_room_event', {data: $('#message').val()});
                 return false;
             });
             $('form#disconnect').submit(function(event) {
