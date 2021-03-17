@@ -23,11 +23,11 @@ def readButton():
     myLobby = None
     urlSuffix = ''
     if request.form.get('joinGameButton') == 'joinGame':
-        urlSuffix = '/readButton'
+        urlSuffix = '/lobby'
         lobbyName = request.form.get('join_room')
         myLobby = lobbies.findLobby(lobbyName=lobbyName)
     elif request.form.get('createGameButton') == 'createGame':
-        urlSuffix = '/readButton'
+        urlSuffix = '/lobby'
         myLobby = Lobby()
         lobbies.addLobby(newLobby=myLobby)
     if request.form.get('joinGameButton') == 'joinGame' or request.form.get('createGameButton') == 'createGame':
