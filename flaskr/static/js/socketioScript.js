@@ -12,8 +12,8 @@ $(document).ready(function() {
             // server is established.
             socket.on('connect', function() {
                 socket.emit('my_event', {data: 'I\'m connected!'});
-                //socket.emit('join', {room: myLobbyName});
-                //return false;
+                socket.emit('join', {room: myLobbyName});
+                return false;
             });
 
             // Event handler for server sent data.
