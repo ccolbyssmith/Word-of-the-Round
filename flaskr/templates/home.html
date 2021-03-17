@@ -9,13 +9,7 @@
 <body>
     <h1>Word of the Round</h1>
     <span class="large-br"></span>
-    <form action="{{ url_for('home.readButton') }}" method="post">
-        <input class="center" type="text" name="name" id="name" placeholder="Name">
-        <br />
-        <span class="large-br"></span>
-        <input class="center" type="text" name="join_room" id="join_room" placeholder="Room Name">
-        <br />
-        <span class="small-br"></span>
+    <form action="{{ url_for('home.readHomeButtons') }}" method="post">
         <button class="center button" name="joinGameButton" value="joinGame">Join Game</button>
         <br />
         <span class="large-br"></span>

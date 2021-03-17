@@ -53,11 +53,11 @@ $(document).ready(function() {
             // These accept data from the user and send it to the server in a
             // variety of ways
             $('form#leave').submit(function(event) {
-                socket.emit('leave', {room: 's'});
+                socket.emit('leave', {room: myLobbyName});
                 return false;
             });
             $('form#send').submit(function(event) {
-                socket.emit('message', {data: $('#room_data').val()});
+                socket.emit('sendMessage', {room: myLobbyName});
                 return false;
             });
             $('form#disconnect').submit(function(event) {

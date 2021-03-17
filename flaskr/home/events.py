@@ -37,7 +37,7 @@ def leave(message):
 
 
 @socketio.event
-def my_room_event(message):
+def sendMessage(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
          {'data': message['data'], 'count': session['receive_count']},

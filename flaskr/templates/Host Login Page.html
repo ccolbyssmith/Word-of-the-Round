@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+      <title>Player Login Page</title>
+   </head>
+	
+   <body>
+      <form action="{{ url_for('home.readCreateGameButton') }}" method="post">
+		  <p align = "center">
+         	 Please enter your name: <input type = "text" name = "name" />
+         	 <br> <br> <br> <br> 
+			 Ready to join the lobby? <button class="button" name="yesbuttonlogin" value="Yes!">Yes!</button>
+		  </p>
+      </form>
+   </body>
+	
+</html>

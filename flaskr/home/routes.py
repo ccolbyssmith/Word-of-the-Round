@@ -17,25 +17,14 @@ thread_lock = Lock()
 def displayHomePage():
     return render_template('home.html')
 
-@home.route('/readButton', methods=['POST'])
-def readButton():
-    myPlayer = None
-    myLobby = None
+@home.route('/readHomeButtons', methods=['POST'])
+def readHomeButtons():
     urlSuffix = ''
     if request.form.get('joinGameButton') == 'joinGame':
-        urlSuffix = '/playerloginpage'
-        lobbyName = request.form.get('join_room')
-        myLobby = lobbies.findLobby(lobbyName=lobbyName)
+        urlSuffix = '/joineeLoginPage'
     elif request.form.get('createGameButton') == 'createGame':
-        urlSuffix = '/playerloginpage'
-        myLobby = Lobby()
-        lobbies.addLobby(newLobby=myLobby)
-    if request.form.get('joinGameButton') == 'joinGame' or request.form.get('createGameButton') == 'createGame':
-        myPlayer = Player(name=request.form.get('name'))
-        lobbies.findLobby(lobbyName=myLobby.name).addPlayer(player=myPlayer)
+        urlSuffix = '/hostLoginPage'
     prefix = request.path.rsplit('/', 1)[0]
-    session['myLobbyName'] = myLobby.name
-    session['myPlayerID'] = myPlayer.id
     return redirect(prefix + urlSuffix)
 
 @home.route('/lobby')
@@ -44,15 +33,43 @@ def displayLobby():
         myLobbyName=json.dumps(session.get('myLobbyName', None)), myPlayerID=json.dumps(session.get('myPlayerID', None)))
 
 
-@home.route('/playerloginpage')
+@home.route('/hostLoginPage')
 def displayLoginPage():
-    return render_template('Player Login Page.html')
+    return render_template('Host Login Page.html')
 
-@home.route('/readyesbuttonlogin', methods=['POST'])
-def readyesbuttonlogin():
+@home.route('/readCreateGameButton', methods=['POST'])
+def readCreateGameButton():
+    myPlayer = None
+    myLobby = None
     urlSuffix = ''
     if request.form.get('yesbuttonlogin') == 'Yes!':
         urlSuffix = '/lobby'
+        myPlayer = Player(name=request.form.get('name'))
+        myLobby = Lobby()
+        myLobby.addPlayer(myPlayer)
+        lobbies.addLobby(newLobby=myLobby)
+        session['myLobbyName'] = myLobby.name
+        session['myPlayerID'] = myPlayer.id
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix) 
+
+@home.route('/joineeLoginPage')
+def displayHostLoginPage():
+    return render_template('Joinee Login Page.html')
+
+@home.route('/readJoinGameButton', methods=['POST'])
+def readJoinGameButton():
+    myPlayer = None
+    myLobby = None
+    urlSuffix = ''
+    if request.form.get('yesbuttonlogin') == 'Yes!':
+        urlSuffix = '/lobby'
+        myPlayer = Player(name=request.form.get('name'))
+        lobbyName = request.form.get('join_room')
+        myLobby = lobbies.findLobby(lobbyName=lobbyName)
+        myLobby.addPlayer(myPlayer)
+        session['myLobbyName'] = myLobby.name
+        session['myPlayerID'] = myPlayer.id
+    prefix = request.path.rsplit('/', 1)[0]
+    return redirect(prefix + urlSuffix)
     
