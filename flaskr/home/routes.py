@@ -29,8 +29,7 @@ def readHomeButtons():
 
 @home.route('/lobby')
 def displayLobby():
-    return render_template('lobby.html', async_mode=socketio.async_mode, 
-        myLobbyName=json.dumps(session.get('myLobbyName', None)), myPlayerID=json.dumps(session.get('myPlayerID', None)))
+    return render_template('lobby.html', async_mode=socketio.async_mode)
 
 
 @home.route('/hostLoginPage')
@@ -73,3 +72,8 @@ def readJoinGameButton():
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
     
+@home.route('/getData', methods=['GET'])
+def getdata():
+    if request.method == 'GET':
+        message = {'myLobbyName':session['myLobbyName'], 'myPlayerID':session['myPlayerID']}
+        return jsonify(message)
