@@ -23,11 +23,11 @@ def readButton():
     myLobby = None
     urlSuffix = ''
     if request.form.get('joinGameButton') == 'joinGame':
-        urlSuffix = '/lobby'
+        urlSuffix = '/playerloginpage'
         lobbyName = request.form.get('join_room')
         myLobby = lobbies.findLobby(lobbyName=lobbyName)
     elif request.form.get('createGameButton') == 'createGame':
-        urlSuffix = '/lobby'
+        urlSuffix = '/playerloginpage'
         myLobby = Lobby()
         lobbies.addLobby(newLobby=myLobby)
     if request.form.get('joinGameButton') == 'joinGame' or request.form.get('createGameButton') == 'createGame':
@@ -42,3 +42,17 @@ def readButton():
 def displayLobby():
     return render_template('lobby.html', async_mode=socketio.async_mode, 
         myLobbyName=json.dumps(session.get('myLobbyName', None)), myPlayerID=json.dumps(session.get('myPlayerID', None)))
+
+
+@home.route('/playerloginpage')
+def displayLoginPage():
+    return render_template('Player Login Page.html')
+
+@home.route('/readyesbuttonlogin', methods=['POST'])
+def readyesbuttonlogin():
+    urlSuffix = ''
+    if request.form.get('yesbuttonlogin') == 'Yes!':
+        urlSuffix = '/lobby'
+    prefix = request.path.rsplit('/', 1)[0]
+    return redirect(prefix + urlSuffix) 
+    
