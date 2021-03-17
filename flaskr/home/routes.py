@@ -17,17 +17,17 @@ thread_lock = Lock()
 def displayHomePage():
     return render_template('home.html')
 
-@home.route('/lobby', methods=['POST'])
+@home.route('/readButton', methods=['POST'])
 def readButton():
     myPlayer = None
     myLobby = None
     urlSuffix = ''
     if request.form.get('joinGameButton') == 'joinGame':
-        urlSuffix = '/lobby'
+        urlSuffix = '/readButton'
         lobbyName = request.form.get('join_room')
         myLobby = lobbies.findLobby(lobbyName=lobbyName)
     elif request.form.get('createGameButton') == 'createGame':
-        urlSuffix = '/lobby'
+        urlSuffix = '/readButton'
         myLobby = Lobby()
         lobbies.addLobby(newLobby=myLobby)
     if request.form.get('joinGameButton') == 'joinGame' or request.form.get('createGameButton') == 'createGame':
