@@ -13,7 +13,7 @@ $(document).ready(function() {
             socket.on('connect', function() {
                 socket.emit('my_event', {data: 'I\'m connected!'});
                 //socket.emit('join', {room: myLobbyName});
-                return false;
+                //return false;
             });
 
             // Event handler for server sent data.
