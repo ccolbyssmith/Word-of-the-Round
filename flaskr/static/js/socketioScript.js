@@ -12,7 +12,7 @@ $(document).ready(function() {
             // server is established.
             socket.on('connect', function() {
                 socket.emit('my_event', {data: 'I\'m connected!'});
-                socket.emit('join', {room: myLobbyName});
+                //socket.emit('join', {room: myLobbyName});
                 return false;
             });
 
