@@ -75,5 +75,5 @@ def readJoinGameButton():
 @home.route('/getData', methods=['GET'])
 def getdata():
     if request.method == 'GET':
-        message = {'myLobbyName':session['myLobbyName'], 'myPlayerID':session['myPlayerID']}
+        message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID']}
         return jsonify(message)

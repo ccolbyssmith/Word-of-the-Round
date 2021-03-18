@@ -1,28 +1,43 @@
 $(document).ready(function() {
+    async fetchLobbyName() {
+        try {
+            const response = await fetch(`/getData`, {
+                method: 'GET',
+                credentials: 'same-origin'
+            });
+            const lobbyName = await response.json()['myLobbyName'];
+            return lobbyName;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async fetchPlayerID() {
+        try {
+            const response = await fetch(`/getData`, {
+                method: 'GET',
+                credentials: 'same-origin'
+            });
+            const playerID = await response.json()['myPlayerID'];
+            return playerID;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    var myLobbyName = await fetchLobbyName();
+    var myPlayerID = await fetchPlayerID();
+
     // Connect to the Socket.IO server.
     // The connection URL has the following format, relative to the current page:
     //     http[s]://<domain>:<port>[/<namespace>]
     var socket = io();
 
-    var myLobbyName = '';
-    var myPlayerID = '';
-
-    fetch('/getData')
-        .then(function (response) {
-            return response.json();
-        }).then(function (data) {
-            console.log('GET response:');
-            myLobbyName = data.myLobbyName
-            myPlayerID = data.myPlayerID
-        });
-
     // Event handler for new connections.
     // The callback function is invoked when a connection with the
     // server is established.
     socket.on('connect', function() {
-    socket.emit('my_event', {data: 'I\'m connected!'});
-    socket.emit('join', {room: myLobbyName});
-    return false;
+        socket.emit('my_event', {room: $(myLobbyName)});
     });
 
     // Event handler for server sent data.
@@ -62,11 +77,11 @@ $(document).ready(function() {
     // These accept data from the user and send it to the server in a
     // variety of ways
     $('form#leave').submit(function(event) {
-        socket.emit('leave', {room: myLobbyName});
+        socket.emit('leave', {room: $(myLobbyName)});
         return false;
     });
-    $('form#send').submit(function(event) {
-        socket.emit('sendMessage', {room: myLobbyName});
+    $('form#send_room').submit(function(event) {
+        socket.emit('my_room_event', {room: $(myLobbyName), data: $('#room_data').val()});
         return false;
     });
     $('form#disconnect').submit(function(event) {
