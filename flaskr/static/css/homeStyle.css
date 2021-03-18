@@ -1,9 +1,10 @@
 body {
     background-color: #10369e;
-    color: white;
+    color: #ffac00;
 }
 
 h1 {
+    color: white;
     text-align: center;
     font-size: 400%;
     margin-top: 120px;

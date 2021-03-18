@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-   <head>
-      <title>Player Login Page</title>
-   </head>
+<head>
+	<title>Player Login Page</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+</head>
 	
    <body>
       <form action="{{ url_for('home.readCreateGameButton') }}" method="post">

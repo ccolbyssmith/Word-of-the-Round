@@ -21,7 +21,7 @@ def background_thread():
 @socketio.event
 def my_event(message):
     print('Client Joined Room')
-    join_room(message['room'])
+    join_room(session['myLobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
          {'data': 'In rooms: ' + ', '.join(rooms()),
@@ -31,7 +31,7 @@ def my_event(message):
 @socketio.event
 def leave(message):
     print('Client Left Room')
-    leave_room(message['room'])
+    leave_room(session['myLobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
          {'data': 'In rooms: ' + ', '.join(rooms()),
@@ -43,7 +43,7 @@ def my_room_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
          {'data': message['data'], 'count': session['receive_count']},
-         to=message['room'])
+         to=session['myLobbyName'])
 
 
 @socketio.event
