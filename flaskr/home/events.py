@@ -19,7 +19,7 @@ def background_thread():
                       {'data': 'Server generated event', 'count': count})
 
 @socketio.event
-def my_event(message):
+def join_lobby(message):
     print('Client Joined Room')
     join_room(session['myLobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1

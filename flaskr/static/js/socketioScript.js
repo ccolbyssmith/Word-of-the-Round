@@ -8,7 +8,7 @@ $(document).ready(function() {
     // The callback function is invoked when a connection with the
     // server is established.
     socket.on('connect', function() {
-        socket.emit('my_event',{});
+        socket.emit('join_lobby', {});
     });
 
     // Event handler for server sent data.
