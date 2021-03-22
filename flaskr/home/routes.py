@@ -7,8 +7,8 @@ import json
 
 from .. import socketio
 from . import home
-from ..models import Lobby, Player
-from ..__init__ import lobbies
+from ..models import dataManipulator
+import uuid
 thread = None
 thread_lock = Lock()
 
@@ -38,17 +38,17 @@ def displayLoginPage():
 
 @home.route('/readCreateGameButton', methods=['POST'])
 def readCreateGameButton():
-    myPlayer = None
-    myLobby = None
+    data = dataManipulator()
     urlSuffix = ''
     if request.form.get('yesbuttonlogin') == 'Yes!':
         urlSuffix = '/lobby'
-        myPlayer = Player(name=request.form.get('name'))
-        myLobby = Lobby()
-        myLobby.addPlayer(myPlayer)
-        lobbies.addLobby(newLobby=myLobby)
-        session['myLobbyName'] = myLobby.name
-        session['myPlayerID'] = myPlayer.id
+        myPlayerID = str(uuid.uuid4())
+        myPlayerName = name=request.form.get('name')
+        myLobbyName = str(uuid.uuid4()).split('-')[0]
+        data.addLobby(newLobbyName=myLobbyName)
+        data.addPlayer(playerID=myPlayerID, playerName=myPlayerName, lobbyName=myLobbyName)
+        session['myLobbyName'] = myLobbyName
+        session['myPlayerID'] = myPlayerID
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix) 
 
@@ -58,17 +58,16 @@ def displayHostLoginPage():
 
 @home.route('/readJoinGameButton', methods=['POST'])
 def readJoinGameButton():
-    myPlayer = None
-    myLobby = None
+    data = dataManipulator()
     urlSuffix = ''
     if request.form.get('yesbuttonlogin') == 'Yes!':
         urlSuffix = '/lobby'
-        myPlayer = Player(name=request.form.get('name'))
-        lobbyName = request.form.get('join_room')
-        myLobby = lobbies.findLobby(lobbyName=lobbyName)
-        myLobby.addPlayer(myPlayer)
-        session['myLobbyName'] = myLobby.name
-        session['myPlayerID'] = myPlayer.id
+        myPlayerID = str(uuid.uuid4())
+        myPlayerName = name=request.form.get('name')
+        myLobbyName = request.form.get('game id')
+        data.addPlayer(playerID=myPlayerID, playerName=myPlayerName, lobbyName=myLobbyName)
+        session['myLobbyName'] = myLobbyName
+        session['myPlayerID'] = myPlayerID
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
     

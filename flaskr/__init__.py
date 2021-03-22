@@ -5,10 +5,11 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO()
 app = Flask(__name__)
-from .models import LobbyList
-lobbies = LobbyList()
+from .models import dataManipulator
 
 def create_app(debug=False):
+    data = dataManipulator()
+    data.createNewData()
     """Create an application."""
     app.config['TESTING'] = True
     app.config['SECRET_KEY'] = 'This is a Secret'
