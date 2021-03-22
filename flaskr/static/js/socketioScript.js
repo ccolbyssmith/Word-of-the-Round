@@ -15,8 +15,15 @@ $(document).ready(function() {
     // The callback function is invoked whenever the server emits data
     // to the client. The data is then displayed in the "Received"
     // section of the page.
+    socket.on('server_response', function(msg, cb) {
+        $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
+        if (cb)
+            cb();
+    });
+
     socket.on('my_response', function(msg, cb) {
-        $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+        console.log(msg.user);
+        $('#log').append('<br>' + $('<div/>').text(msg.user + ': ' + msg.data).html());
         if (cb)
             cb();
     });

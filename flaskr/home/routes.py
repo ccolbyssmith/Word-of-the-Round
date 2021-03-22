@@ -1,8 +1,6 @@
 from threading import Lock
 from flask import Flask, render_template, session, request, redirect, \
     copy_current_request_context
-from flask_socketio import SocketIO, emit, join_room, leave_room, \
-    close_room, rooms, disconnect
 import json
 
 from .. import socketio
@@ -17,6 +15,7 @@ thread_lock = Lock()
 def displayHomePage():
     return render_template('home.html')
 
+#redirects user to Join a login screen
 @home.route('/readHomeButtons', methods=['POST'])
 def readHomeButtons():
     urlSuffix = ''
@@ -27,15 +26,17 @@ def readHomeButtons():
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
 
+#displays the lobby page
 @home.route('/lobby')
 def displayLobby():
     return render_template('lobby.html', async_mode=socketio.async_mode)
 
-
+#displays the host login page
 @home.route('/hostLoginPage')
 def displayLoginPage():
     return render_template('Host Login Page.html')
 
+#redirects the user to a newly generated lobby
 @home.route('/readCreateGameButton', methods=['POST'])
 def readCreateGameButton():
     data = dataManipulator()
@@ -52,10 +53,12 @@ def readCreateGameButton():
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix) 
 
+#displays the joinee login page
 @home.route('/joineeLoginPage')
 def displayHostLoginPage():
     return render_template('Joinee Login Page.html')
 
+#redirects the user to an already existing lobby
 @home.route('/readJoinGameButton', methods=['POST'])
 def readJoinGameButton():
     data = dataManipulator()
@@ -71,6 +74,7 @@ def readJoinGameButton():
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
     
+#returns playerID and lobbyName for javascript to use
 @home.route('/getData', methods=['GET'])
 def getdata():
     if request.method == 'GET':
