@@ -15,8 +15,6 @@ def background_thread():
     while True:
         socketio.sleep(10)
         count += 1
-        socketio.emit('my_response',
-                      {'data': 'Server generated event', 'count': count})
 
 @socketio.event
 def join_lobby(message):
