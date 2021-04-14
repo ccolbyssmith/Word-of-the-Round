@@ -83,6 +83,10 @@ class dataManipulator:
 		with open(self.fileLocation, 'r') as read_file:
 			return json.load(read_file)
 
+	def loadPlayerList(self, lobbyName):
+		data = self.loadData()
+		return json.loads(data[lobbyName])
+
 	def writeData(self, data):
 		with open(self.fileLocation, 'w') as write_file:
 			json.dump(data, write_file)

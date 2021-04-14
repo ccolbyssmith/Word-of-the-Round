@@ -32,7 +32,7 @@ def readHomeButtons():
 #displays the lobby page
 @home.route('/lobby')
 def displayLobby():
-    return render_template('lobby.html', async_mode=socketio.async_mode)
+    return render_template('lobby.html')
 
 #displays the host login page
 @home.route('/hostLoginPage')
@@ -81,7 +81,7 @@ def readJoinGameButton():
     return redirect(prefix + urlSuffix)
     
 #returns playerID and lobbyName for javascript to use
-@home.route('/getData', methods=['GET'])
+@home.route('/getId', methods=['GET'])
 def getdata():
     if request.method == 'GET':
         message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID']}
@@ -92,3 +92,12 @@ def getJoinError():
     if request.method == 'GET':
         message = {'joinError': session['joinError']}
         return jsonify(message)
+
+@home.route('/getPlayers', methods=['GET'])
+def getPlayers():
+    if request.method == 'GET':
+        playerList = data.loadPlayerList(session['myLobbyName'])
+        playerNames = []
+        for player in playerList:
+            playerNames.append(player['playerName'])
+        return jsonify(playerNames)

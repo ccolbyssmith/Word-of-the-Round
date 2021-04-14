@@ -16,6 +16,16 @@ $(document).ready(function() {
     // to the client. The data is then displayed in the "Received"
     // section of the page.
     socket.on('server_response', function(msg, cb) {
+        fetch('/Word_of_the_Round/getPlayers')
+	        .then(response => response.json())
+	        .then(players => {
+                console.log(players)
+                var playerString = players[0]
+                for (i = 1; i < players.length; i++) {
+                    playerString = playerString +  ", " + players[i]
+                }
+		        document.getElementById('player_list').innerHTML = "Players: " + playerString
+            });
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
         if (cb)
             cb();
@@ -70,3 +80,10 @@ $(document).ready(function() {
         return false;
     });
 });
+
+fetch('/Word_of_the_Round/getId')
+	.then(response => response.json())
+	.then(id => {
+		var gameCode = id['myLobbyName']
+		document.getElementById('game_code').innerHTML = "Game Code: " + gameCode
+    });

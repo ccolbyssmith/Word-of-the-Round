@@ -9,8 +9,8 @@
 </head>
 <body>
     <h1>Lobby Page</h1>
-    <p>Async mode is: <b>{{ async_mode }}</b></p>
-    <p>Average ping/pong latency: <b><span id="ping-pong"></span>ms</b></p>
+    <p id="game_code"></p>
+    <p id="player_list"></p>
     <h2>Send:</h2>
     <form id="send_room" method="POST" action='#'>
         <input type="text" name="room_data" id="room_data" placeholder="Message">

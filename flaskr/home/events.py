@@ -27,8 +27,8 @@ def join_lobby(message):
     join_room(session['myLobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
-         {'data': 'In room: ' + session['myLobbyName'],
-          'count': session['receive_count']})
+         {'data': dataHelper.returnPlayerName(session['myPlayerID']) + ' HAS JOINED THE ROOM', 
+         'count': session['receive_count']}, to=session['myLobbyName'])
 
 #the event invoked to leave a lobby
 @socketio.event
