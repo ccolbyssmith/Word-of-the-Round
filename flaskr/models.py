@@ -15,6 +15,7 @@ class dataManipulator:
 		lobbies = json.loads(data['lobbies'])
 		lobbies.remove(emptyLobby)
 		data['lobbies'] = json.dumps(lobbies)
+		data.pop(emptyLobby)
 		self.writeData(data)
 
 	def lobbyExists(self, soughtLobbyName):
@@ -70,6 +71,13 @@ class dataManipulator:
 		playerList.pop(playerPosition)
 		data[lobbyName] = json.dumps(playerList)
 		self.writeData(data)
+
+	def returnPlayerCount(self, lobbyName):
+		data = self.loadData()
+		count = 0
+		for player in json.loads(data[lobbyName]):
+			count += 1
+		return count
 
 	def loadData(self):
 		with open(self.fileLocation, 'r') as read_file:

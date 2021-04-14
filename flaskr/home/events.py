@@ -40,6 +40,11 @@ def leave(message):
          'count': session['receive_count']}, to=session['myLobbyName'])
     leave_room(session['myLobbyName'])
     destination = url_for('home.displayHomePage')
+    dataHelper.deletePlayer(session['myPlayerID'])
+    if dataHelper.returnPlayerCount(session['myLobbyName']) == 0:
+        dataHelper.deleteLobby(session['myLobbyName'])
+    session.pop("myLobbyName")
+    session.pop('myPlayerID')
     emit('redirect', destination)
 
 #the event invoked to send a message in a lobby
