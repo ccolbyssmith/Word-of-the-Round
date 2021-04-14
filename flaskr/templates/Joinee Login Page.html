@@ -5,18 +5,21 @@
 <head>
 	<title>Player Login Page</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+	<script src="{{url_for('static', filename='js/joineeScript.js')}}"></script>
 </head>
 	
-   <body>
-      <form action="{{ url_for('home.readJoinGameButton') }}" method="post">
-		  <p align = "center">
-         	 Please enter your name: <input type = "text" name = "name" />
-         	 <br> <br> <br> <br> 
-         	 Game ID: <input type = "text" name = "game id" id="game id"/>
-			 <br><br> <br> <br> 
-			 Ready to join the lobby? <button class="button" name="yesbuttonlogin" value="Yes!">Yes!</button>
-		  </p>
-      </form>
-   </body>
+<body>
+	<form action="{{ url_for('home.readJoinGameButton') }}" method="post">
+		<p align="center">
+			Please enter your name: <input type="text" name="name" />
+			<br> <br> <br> <br>
+			Game ID: <input type="text" name="game id" id="game id" />
+			<br><br> <br> <br>
+			Ready to join the lobby? <button class="button" name="yesbuttonlogin" value="Yes!">Yes!</button>
+			<br><br> <br> <br>
+		</p>
+	</form>
+	<p id="error" align ="center"></p>
+</body>
 	
 </html>

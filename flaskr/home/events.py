@@ -1,5 +1,5 @@
 from threading import Lock
-from flask import Flask, render_template, session, request, \
+from flask import Flask, render_template, session, request, redirect, url_for, \
     copy_current_request_context
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
@@ -9,6 +9,8 @@ from . import home
 from ..models import dataManipulator
 thread = None
 thread_lock = Lock()
+
+dataHelper = dataManipulator()
 
 #maintains the connection between server and user
 def background_thread():
@@ -32,17 +34,18 @@ def join_lobby(message):
 @socketio.event
 def leave(message):
     print('Client Left Room')
-    leave_room(session['myLobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
-         {'data': 'In rooms: ' + ', '.join(rooms()),
-          'count': session['receive_count']})
+         {'data': dataHelper.returnPlayerName(session['myPlayerID']) + ' HAS LEFT THE ROOM', 
+         'count': session['receive_count']}, to=session['myLobbyName'])
+    leave_room(session['myLobbyName'])
+    destination = url_for('home.displayHomePage')
+    emit('redirect', destination)
 
 #the event invoked to send a message in a lobby
 @socketio.event
 def my_room_event(message):
     print('message sent')
-    dataHelper = dataManipulator()
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
          {'data': message['data'], 'count': session['receive_count'], 

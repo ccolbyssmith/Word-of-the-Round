@@ -12,15 +12,12 @@
     <p>Async mode is: <b>{{ async_mode }}</b></p>
     <p>Average ping/pong latency: <b><span id="ping-pong"></span>ms</b></p>
     <h2>Send:</h2>
-    <form id="leave" method="POST" action='#'>
-        <input type="submit" value="Leave Room">
-    </form>
     <form id="send_room" method="POST" action='#'>
         <input type="text" name="room_data" id="room_data" placeholder="Message">
         <input type="submit" value="Send to Room">
     </form>
-    <form id="disconnect" method="POST" action="#">
-        <input type="submit" value="Disconnect">
+    <form id="leave" method="POST" action='#'>
+        <input type="submit" value="Leave Room">
     </form>
     <h2>Receive:</h2>
     <div id="log"></div>

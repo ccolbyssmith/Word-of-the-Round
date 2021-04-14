@@ -28,6 +28,13 @@ $(document).ready(function() {
             cb();
     });
 
+
+    //used for redircting user to new url
+    socket.on('redirect', function(destination) {
+        window.location.href = destination;
+        socket.emit('disconnect_request')
+    });
+
     // Interval function that tests message latency by sending a "ping"
     // message. The server then responds with a "pong" message and the
     // round trip time is measured.
@@ -60,10 +67,6 @@ $(document).ready(function() {
     });
     $('form#send_room').submit(function(event) {
         socket.emit('my_room_event', {data: $('#room_data').val()});
-        return false;
-    });
-    $('form#disconnect').submit(function(event) {
-        socket.emit('disconnect_request');
         return false;
     });
 });
