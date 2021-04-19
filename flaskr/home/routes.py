@@ -1,6 +1,6 @@
 from threading import Lock
 from flask import Flask, render_template, session, request, redirect, \
-    copy_current_request_context, jsonify
+    copy_current_request_context, jsonify, url_for
 import json
 
 from .. import socketio
@@ -83,7 +83,7 @@ def readJoinGameButton():
 @home.route('/readStartButton', methods=['POST'])
 def readStartButton():
     if request.form.get('startGameButton') == "Start Game":
-        return redirect(url_for('game.phase1'))
+        return redirect(url_for('game.displayPhase1'))
     
 #returns playerID and lobbyName for javascript to use
 @home.route('/getId', methods=['GET'])

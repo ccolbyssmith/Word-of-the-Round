@@ -16,5 +16,7 @@ def create_app(debug=False):
     app.debug = debug
     from .home import home as home
     app.register_blueprint(home)
+    from .game import game as game
+    app.register_blueprint(game)
     socketio.init_app(app)
     return app
