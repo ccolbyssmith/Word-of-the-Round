@@ -79,6 +79,11 @@ def readJoinGameButton():
             session['joinError'] = True
     prefix = request.path.rsplit('/', 1)[0]
     return redirect(prefix + urlSuffix)
+
+@home.route('/readStartButton', methods=['POST'])
+def readStartButton():
+    if request.form.get('startGameButton') == "Start Game":
+        return redirect(url_for('game.phase1'))
     
 #returns playerID and lobbyName for javascript to use
 @home.route('/getId', methods=['GET'])
