@@ -2,10 +2,10 @@ class PromptDeck:
 	fileLocation = 'flaskr/data/prompts.json'
 
 	def __init__(self):
-		
+		self.createDeck()
 
 
-	def loadDeck(self):
+	def createDeck(self):
 		self.deck = []
 		with open(self.fileLocation, 'r') as read_file:
 			lines = read_file.readlines()
@@ -17,8 +17,9 @@ class WordDeck:
 	fileLocation = 'flaskr/data/words.json'
 
 	def __init__(self):
+		self.createDeck()
 
-	def loadDeck(self):
+	def createDeck(self):
 		self.deck = []
 		with open(self.fileLocation, 'r') as read_file:
 			lines = read_file.readlines()
