@@ -67,7 +67,7 @@ def readJoinGameButton():
     urlSuffix = ''
     if request.form.get('yesbuttonlogin') == 'Yes!':
         myLobbyName = request.form.get('game id')
-        if data.lobbyExists(myLobbyName):
+        if data.lobbyExists(myLobbyName) and data.gameStarted(myLobbyName) == False:
             urlSuffix = '/lobby'
             myPlayerID = str(uuid.uuid4())
             myPlayerName = name=request.form.get('name')
@@ -89,7 +89,7 @@ def readStartButton():
 @home.route('/getId', methods=['GET'])
 def getdata():
     if request.method == 'GET':
-        message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID']}
+        message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID'], 'host': data.isHost(session['myPlayerID'])}
         return jsonify(message)
 
 @home.route('/getJoinError', methods=['GET'])

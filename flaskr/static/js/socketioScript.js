@@ -19,12 +19,12 @@ $(document).ready(function() {
         fetch('/Word_of_the_Round/getPlayers')
 	        .then(response => response.json())
 	        .then(players => {
-                console.log(players)
-                var playerString = players[0]
+                console.log(players);
+                var playerString = players[0];
                 for (i = 1; i < players.length; i++) {
-                    playerString = playerString +  ", " + players[i]
+                    playerString = playerString +  ", " + players[i];
                 }
-		        document.getElementById('player_list').innerHTML = "Players: " + playerString
+		        document.getElementById('player_list').innerHTML = "Players: " + playerString;
             });
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
         if (cb)
@@ -40,9 +40,12 @@ $(document).ready(function() {
 
 
     //used for redircting user to new url
-    socket.on('redirect', function(destination) {
+    socket.on('redirect', function(destination, cb) {
+        console.log('works')
         window.location.href = destination;
-        socket.emit('disconnect_request')
+        socket.emit('disconnect_request');
+        if (cb)
+            cb();
     });
 
     // Interval function that tests message latency by sending a "ping"
@@ -79,11 +82,19 @@ $(document).ready(function() {
         socket.emit('my_room_event', {data: $('#room_data').val()});
         return false;
     });
+    $('form#start').submit(function(event) {
+        socket.emit('start_game');
+        return false;
+    });
 });
 
 fetch('/Word_of_the_Round/getId')
 	.then(response => response.json())
 	.then(id => {
-		var gameCode = id['myLobbyName']
-		document.getElementById('game_code').innerHTML = "Game Code: " + gameCode
+		var gameCode = id['myLobbyName'];
+		document.getElementById('game_code').innerHTML = "Game Code: " + gameCode;
+        console.log(id['host'])
+        if (id['host'] == false) {
+            document.getElementById('start').style.display = "none";
+        }
     });

@@ -57,6 +57,13 @@ def my_room_event(message):
          'user': dataHelper.returnPlayerName(session['myPlayerID'])},
          to=session['myLobbyName'])
 
+@socketio.event
+def start_game():
+    print('Started Game')
+    dataHelper.startGame(session['myLobbyName'])
+    destination = url_for('game.displayPhase1')
+    emit('redirect', destination, to=session['myLobbyName'])
+
 #disconnects user from server
 @socketio.event
 def disconnect_request():

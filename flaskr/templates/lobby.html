@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Flask-SocketIO Test</title>
+    <title>Word of the Round Lobby</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
     <script src="{{url_for('static', filename='js/socketioScript.js')}}"></script>
@@ -19,8 +19,8 @@
     <form id="leave" method="POST" action='#'>
         <input type="submit" value="Leave Room">
     </form>
-    <form action="{{ url_for('home.readStartButton') }}" method="post">
-        <button class="center button" name="startGameButton" value="Start Game">Start</button>
+    <form id="start" method="POST" action='#'>
+        <button class="center button" name="startGameButton" value="Start Game" type="submit">Start</button>
     </form>
     <br />
     <h2>Receive:</h2>
