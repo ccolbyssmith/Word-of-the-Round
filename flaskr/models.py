@@ -90,6 +90,9 @@ class dataManipulator:
 		lobbyName = playerLocation[0]
 		playerPosition = playerLocation[1]
 		playerList = json.loads(data[lobbyName])
+		if playerList[playerPosition]['host'] == True:
+			if len(playerList) > 1:
+				playerList[playerPosition + 1]['host'] = True
 		playerList.pop(playerPosition)
 		data[lobbyName] = json.dumps(playerList)
 		self.writeData(data)

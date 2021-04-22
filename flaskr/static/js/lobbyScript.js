@@ -26,6 +26,14 @@ $(document).ready(function() {
                 }
 		        document.getElementById('player_list').innerHTML = "Players: " + playerString;
             });
+        fetch('/Word_of_the_Round/getId')
+	        .then(response => response.json())
+	        .then(id => {
+                console.log(id['host']);
+                if (id['host'] == true) {
+                    document.getElementById('start').style.display = "block";
+                }
+            });
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
         if (cb)
             cb();
