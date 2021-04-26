@@ -11,16 +11,45 @@
     <h1>Lobby Page</h1>
     <p id="game_code"></p>
     <p id="player_list"></p>
-    <h2>Send:</h2>
-    <form id="send_room" method="POST" action='#'>
-        <input type="text" name="room_data" id="room_data" placeholder="Message">
-        <input type="submit" value="Send to Room">
-    </form>
     <form id="leave" method="POST" action='#'>
         <input type="submit" value="Leave Room">
     </form>
     <form id="start" method="POST" action='#'>
         <button class="center button" name="startGameButton" value="Start Game" type="submit">Start</button>
+        <br>
+        <span class="medium-br"></span>
+        <p align="center">
+            Time Limit:
+            <input type="radio" name="Time Limit" value="30s"> 30s
+            <input type="radio" name="Time Limit" value="60s"> 60s
+            <input type="radio" name="Time Limit" value="90s"> 90s
+            <input type="radio" name="Time Limit" value="120s"> 120s
+            <br>
+
+            Word Difficulty:
+            <input type="radio" name="Word Difficulty" value="easy"> Easy
+            <input type="radio" name="Word Difficulty" value="medium"> Medium
+            <input type="radio" name="Word Difficulty" value="hard"> Hard
+            <br>
+
+            Word Count Limit for Responses:
+            <input type="radio" name="Word Count Limit" value="50"> 50
+            <input type="radio" name="Word Count Limit" value="100"> 100
+            <input type="radio" name="Word Count Limit" value="200"> 200
+            <br>
+
+            First to How Many to Win:
+            <p id="win_output"></p>
+            <div class="center slidecontainer">
+                <input type="range" min="1" max="10" value="5" class="slider" id="win_data">
+            </div>
+            <br>
+        </p>
+    </form>
+    <h2>Send:</h2>
+    <form id="send_room" method="POST" action='#'>
+        <input type="text" name="room_data" id="room_data" placeholder="Message">
+        <input type="submit" value="Send to Room">
     </form>
     <br />
     <h2>Receive:</h2>

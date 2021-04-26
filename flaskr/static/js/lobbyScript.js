@@ -91,7 +91,10 @@ $(document).ready(function() {
         return false;
     });
     $('form#start').submit(function(event) {
-        socket.emit('start_game');
+        socket.emit('start_game', {time_limit: $('#Time Limit').val(),
+        word_difficulty: $('Word Difficulty').val(), 
+        word_limit: $('Word Count Limit').val(),
+        win_data: $('win_data').val()});
         return false;
     });
 });
@@ -106,3 +109,12 @@ fetch('/Word_of_the_Round/getId')
             document.getElementById('start').style.display = "none";
         }
     });
+
+var slider = document.getElementById("win_data");
+var output = document.getElementById("win_output");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
