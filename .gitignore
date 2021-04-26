@@ -1,2 +1,3 @@
 __pycache__
 flaskr/data/data.json
+flaskr/data/decks.json
