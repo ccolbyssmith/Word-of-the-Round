@@ -97,6 +97,17 @@ $(document).ready(function() {
         win_data: $('win_data').val()});
         return false;
     });
+
+    var slider = document.getElementById("win_data");
+    var output = document.getElementById("win_output");
+    console.log(slider.value);
+    output.innerHTML = slider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+      console.log(output.innerHTML);
+}
 });
 
 fetch('/Word_of_the_Round/getId')
@@ -109,12 +120,3 @@ fetch('/Word_of_the_Round/getId')
             document.getElementById('start').style.display = "none";
         }
     });
-
-var slider = document.getElementById("win_data");
-var output = document.getElementById("win_output");
-output.innerHTML = slider.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  output.innerHTML = this.value;
-}
