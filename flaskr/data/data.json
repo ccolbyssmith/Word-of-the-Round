@@ -1,1 +1,1 @@
-{"lobbies": "[\"ac2edc7a\", \"8a31f096\"]", "ac2edc7a": {"players": "[{\"playerID\": \"9fe69d62-0f54-473b-ab3c-5c0c7605a7b5\", \"playerName\": \"Colby Smith\", \"host\": true}]", "started": true, "settings": {"time_limit": "30", "word_difficulty": "easy", "word_limit": "50", "win_data": "5"}}, "8a31f096": {"players": "[{\"playerID\": \"4371e51b-7dfd-4f68-9405-018faa6bc331\", \"playerName\": \"Colby Smith\", \"host\": true}]", "started": true, "settings": {"time_limit": "30", "word_difficulty": "easy", "word_limit": "50", "win_data": "5"}}}
+{"lobbies": "[]"}

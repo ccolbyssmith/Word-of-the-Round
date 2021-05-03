@@ -1,3 +1,5 @@
+import random
+
 class CardHandler:
 	def __init__(self, new, cardType, lobby):
 		if cardType == "prompts":
@@ -29,7 +31,7 @@ class CardHandler:
 			decks = json.loads(read_file)
 		decks[self.lobby] = self.deck
 		with open(self.write_fileLocation, 'w') as write_file:
-			json.dumps(self.decks, write_file)
+			json.dumps(decks, write_file)
 
 	def useCard(self, usedCard):
 		for card in self.deck:
@@ -40,7 +42,14 @@ class CardHandler:
 		usablePrompts = []
 		for card in self.deck:
 			if card['used'] = False:
-				usablePrmpts.append(card['prompt'])
+				usablePrompts.append(card['prompt'])
+		chosenPrompts = []
+		for i in range(0, 3):
+			chosenPrompts.append(usablePrompts[random.randint(0, len(usablePrompts))])
+			usablePrompts.remove(chosenPrompts[i])
+			self.useCard(chosenPrompts[i])
+		self.saveDeck()
+		return chosenPrompts
 
 	def refreshDeck(self):
 		for card in self.deck:

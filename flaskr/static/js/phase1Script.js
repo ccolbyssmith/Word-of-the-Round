@@ -4,5 +4,7 @@ $(document).ready(function() {
     //     http[s]://<domain>:<port>[/<namespace>]
     var socket = io();
 
-
+    socket.on('connect', function() {
+        socket.emit('rejoin_lobby', {});
+    });
 });

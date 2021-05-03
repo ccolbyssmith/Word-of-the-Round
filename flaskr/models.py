@@ -34,6 +34,7 @@ class dataManipulator:
 	def startGame(self, lobbyName, settings):
 		data = self.loadData()
 		data[lobbyName]['started'] = True
+		data[lobbyName]['new'] = True
 		data[lobbyName]['settings'] = {'time_limit': settings['time_limit'],
 			'word_difficulty': settings['word_difficulty'], 'word_limit': settings['word_limit'],
 			'win_data': settings['win_data']}
@@ -57,6 +58,14 @@ class dataManipulator:
 				return count
 			count += 1
 		return -1
+
+	def lobbyIsNew(self, lobbyName):
+		return self.loadData()[lobbyName]['new']
+
+	def makeLobbyOld(self, lobbyName):
+		data = self.loadData()
+		data[lobbyName]['new'] = False
+		self.writeData(data)
 
 	def returnPlayerName(self, soughtPlayerID):
 		data = self.loadData()
@@ -104,6 +113,9 @@ class dataManipulator:
 		for player in json.loads(data[lobbyName]['players']):
 			count += 1
 		return count
+
+	def returnSettings(self, lobbyName):
+		return self.loadData()[lobbyName]['settings']
 
 	def loadData(self):
 		with open(self.fileLocation, 'r') as read_file:

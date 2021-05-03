@@ -5,8 +5,11 @@ import json
 
 from .. import socketio
 from . import game
-from ..models import dataManipulator
+from ..models import dataManipulator 
+
+data = dataManipulator() 
 
 @game.route('/Phase1')
 def displayPhase1():
+	isNew = data.lobbyIsNew(session['myLobbyName'])
 	return render_template('Game Part1.html')
