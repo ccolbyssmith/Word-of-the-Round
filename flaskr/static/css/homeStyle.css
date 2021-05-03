@@ -45,10 +45,23 @@ h1 {
     transition: 0s
 }
 
-
 .center {
     position: absolute;
     left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.left {
+    position: absolute;
+    left: 25%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.right {
+    position: absolute;
+    left: 75%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
 }

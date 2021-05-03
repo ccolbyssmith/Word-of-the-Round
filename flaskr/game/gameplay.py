@@ -46,7 +46,7 @@ class CardHandler:
 		for card in self.deck:
 			card['used'] = False
 
-	def returnCardsLeft(self):
+	def returnCardCount(self):
 		count = 0
 		for card in self.deck:
 			if card['used'] = False:
