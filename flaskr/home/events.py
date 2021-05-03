@@ -58,9 +58,9 @@ def my_room_event(message):
          to=session['myLobbyName'])
 
 @socketio.event
-def start_game():
+def start_game(settings):
     print('Started Game')
-    dataHelper.startGame(session['myLobbyName'])
+    dataHelper.startGame(session['myLobbyName'], settings)
     destination = url_for('game.displayPhase1')
     emit('redirect', destination, to=session['myLobbyName'])
 

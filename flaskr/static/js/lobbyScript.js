@@ -91,22 +91,21 @@ $(document).ready(function() {
         return false;
     });
     $('form#start').submit(function(event) {
-        socket.emit('start_game', {time_limit: $('#Time Limit').val(),
-        word_difficulty: $('Word Difficulty').val(), 
-        word_limit: $('Word Count Limit').val(),
-        win_data: $('win_data').val()});
+        console.log(document.getElementById('Time Limit').value);
+        socket.emit('start_game', {time_limit:  document.getElementById('Time Limit').value,
+            word_difficulty: document.getElementById('Word Difficulty').value, 
+            word_limit: document.getElementById('Word Count Limit').value,
+            win_data: document.getElementById('win_data').value});
         return false;
     });
 
     var slider = document.getElementById("win_data");
     var output = document.getElementById("win_output");
-    console.log(slider.value);
     output.innerHTML = slider.value; // Display the default slider value
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function() {
       output.innerHTML = this.value;
-      console.log(output.innerHTML);
 }
 });
 
