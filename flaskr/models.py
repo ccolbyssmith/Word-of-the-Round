@@ -9,6 +9,7 @@ class DataManipulator:
 		lobbies.append(newLobbyName)
 		data['lobbies'] = json.dumps(lobbies)
 		data[newLobbyName] = {}
+		data[newLobbyName]['started'] = False
 		self.writeData(data)
 
 	def deleteLobby(self, emptyLobby):
@@ -23,13 +24,12 @@ class DataManipulator:
 		data = self.loadData()
 		lobbyList = json.loads(data['lobbies'])
 		for lobby in lobbyList:
-			if lobby == lobbyName:
+			if lobby == soughtLobbyName:
 				return True
 		return False
 
-	def gameStarted(self, lobbyName, settings):
-		lobby = self.returnLobby(lobbyName)
-		return lobby['started']
+	def gameStarted(self, lobbyName):
+		return self.loadData()[lobbyName]['started']
 
 	def startGame(self, lobbyName, settings):
 		data = self.loadData()
@@ -61,11 +61,6 @@ class DataManipulator:
 	def lobbyIsNew(self, lobbyName):
 		return self.loadData()[lobbyName]['new']
 
-	def makeLobbyOld(self, lobbyName):
-		data = self.loadData()
-		data[lobbyName]['new'] = False
-		self.writeData(data)
-
 	def returnPlayerName(self, soughtPlayerID):
 		data = self.loadData()
 		playerLocation = self.findPlayerLocation(soughtPlayerID)
@@ -87,7 +82,7 @@ class DataManipulator:
 		playerList = []
 		host = True
 		if data[lobbyName].get('players') != None:
-			playerList = json.loads(data[lobbyName])
+			playerList = json.loads(data[lobbyName]['players'])
 			host = False
 		playerList.append({'playerID': playerID, 'playerName': playerName, 'host': host})
 		data[lobbyName]['players'] = json.dumps(playerList)
@@ -103,7 +98,7 @@ class DataManipulator:
 			if len(playerList) > 1:
 				playerList[playerPosition + 1]['host'] = True
 		playerList.pop(playerPosition)
-		data[lobbyName] = json.dumps(playerList)
+		data[lobbyName]['players'] = json.dumps(playerList)
 		self.writeData(data)
 
 	def returnPlayerCount(self, lobbyName):

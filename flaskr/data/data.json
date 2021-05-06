@@ -1,1 +1,1 @@
-{"lobbies": "[]"}
+{"lobbies": "[\"8bde6487\"]", "8bde6487": {"started": true, "players": "[{\"playerID\": \"4ce8098b-27b6-4f14-adf8-1ade3372d615\", \"playerName\": \"IceFire\", \"host\": true}]", "settings": {"time_limit": "30", "word_difficulty": "easy", "word_limit": "50", "win_data": "5"}}}

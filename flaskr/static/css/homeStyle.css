@@ -54,16 +54,28 @@ h1 {
 
 .left {
     position: absolute;
-    left: 25%;
+    left: 75%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
 }
 
 .right {
     position: absolute;
-    left: 75%;
+    left: 25%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+
+.bottom-right {
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+}
+
+.bottom-left {
+    position: fixed;
+    bottom: 2%;
+    left: 2%;
 }
 
 .large-br {

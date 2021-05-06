@@ -6,12 +6,20 @@ import json
 from .. import socketio
 from . import game
 from ..models import DataManipulator
-from gameplay import CardHandler
+from ..game.gameplay import CardHandler
 
-data = dataManipulator()
-promptHandler = CardHandler("prompts", session['myLobbyName'])
-wordHandler = CardHandler("words", session['myLobbyName'])
+dataHelper = DataManipulator()
+promptHandler = CardHandler("prompts")
+wordHandler = CardHandler("words")
 
 @game.route('/Phase1')
 def displayPhase1():
-	return render_template('Game Part1.html')
+    promptHandler.addLobby(session['myLobbyName']);
+    wordHandler.addLobby(session['myLobbyName']);
+    return render_template('Game Part1.html');
+
+@game.route('/getSettings', methods=['GET'])
+def getSettings():
+    if request.method == 'GET':
+        message = dataHelper.returnSettings()
+        return jsonify(message)

@@ -1,13 +1,15 @@
 import random
 
 class CardHandler:
-	def __init__(self, cardType, lobby):
+	def __init__(self, cardType):
 		if cardType == "prompts":
 			self.load_fileLocation = 'flaskr/data/prompts.txt'
 		elif cardType == "words":
 			self.load_fileLocation = 'flaskr/data/words.txt'
 		self.write_fileLocation = 'flaskr/data/decks.json'
 		self.createDeck()
+
+	def addLobby(self, lobby):
 		self.lobby = lobby
 
 	def createDeck(self):
@@ -32,13 +34,13 @@ class CardHandler:
 
 	def useCard(self, usedCard):
 		for card in self.deck:
-			if usedCard = card['prompt']:
+			if usedCard == card['prompt']:
 				card['used'] = True
 
 	def returnPrompts(self):
 		usablePrompts = []
 		for card in self.deck:
-			if card['used'] = False:
+			if card['used'] == False:
 				usablePrompts.append(card['prompt'])
 		chosenPrompts = []
 		for i in range(0, 3):
@@ -55,6 +57,6 @@ class CardHandler:
 	def returnCardCount(self):
 		count = 0
 		for card in self.deck:
-			if card['used'] = False:
+			if card['used'] == False:
 				count += 1
 		return count

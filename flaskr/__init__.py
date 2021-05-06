@@ -5,10 +5,10 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO()
 app = Flask(__name__)
-from .models import dataManipulator
+from .models import DataManipulator
 
 def create_app(debug=False):
-    data = dataManipulator()
+    data = DataManipulator()
     data.createNewData()
     """Create an application."""
     app.config['TESTING'] = True
