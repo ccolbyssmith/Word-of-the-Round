@@ -14,5 +14,4 @@ wordHandler = CardHandler("words", session['myLobbyName'])
 
 @game.route('/Phase1')
 def displayPhase1():
-	isNew = data.lobbyIsNew(session['myLobbyName'])
 	return render_template('Game Part1.html')
