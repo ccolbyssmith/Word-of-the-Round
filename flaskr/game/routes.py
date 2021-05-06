@@ -5,9 +5,12 @@ import json
 
 from .. import socketio
 from . import game
-from ..models import dataManipulator 
+from ..models import DataManipulator
+from gameplay import CardHandler
 
-data = dataManipulator() 
+data = dataManipulator()
+promptHandler = CardHandler("prompts", session['myLobbyName'])
+wordHandler = CardHandler("words", session['myLobbyName'])
 
 @game.route('/Phase1')
 def displayPhase1():

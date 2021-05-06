@@ -6,11 +6,11 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 
 from .. import socketio
 from . import home
-from ..models import dataManipulator
+from ..models import DataManipulator
 thread = None
 thread_lock = Lock()
 
-dataHelper = dataManipulator()
+dataHelper = DataManipulator()
 
 #maintains the connection between server and user
 def background_thread():

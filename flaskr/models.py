@@ -1,6 +1,6 @@
 import json
 
-class dataManipulator:
+class DataManipulator:
 	fileLocation = 'flaskr/data/data.json'
 	
 	def addLobby(self, newLobbyName):
@@ -34,7 +34,6 @@ class dataManipulator:
 	def startGame(self, lobbyName, settings):
 		data = self.loadData()
 		data[lobbyName]['started'] = True
-		data[lobbyName]['new'] = True
 		data[lobbyName]['settings'] = {'time_limit': settings['time_limit'],
 			'word_difficulty': settings['word_difficulty'], 'word_limit': settings['word_limit'],
 			'win_data': settings['win_data']}

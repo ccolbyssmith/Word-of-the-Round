@@ -1,16 +1,13 @@
 import random
 
 class CardHandler:
-	def __init__(self, new, cardType, lobby):
+	def __init__(self, cardType, lobby):
 		if cardType == "prompts":
 			self.load_fileLocation = 'flaskr/data/prompts.txt'
 		elif cardType == "words":
 			self.load_fileLocation = 'flaskr/data/words.txt'
 		self.write_fileLocation = 'flaskr/data/decks.json'
-		if new == True:
-			self.createDeck()
-		else:
-			self.loadDeck()
+		self.createDeck()
 		self.lobby = lobby
 
 	def createDeck(self):

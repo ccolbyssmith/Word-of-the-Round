@@ -5,12 +5,12 @@ import json
 
 from .. import socketio
 from . import home
-from ..models import dataManipulator
+from ..models import DataManipulator
 import uuid
 thread = None
 thread_lock = Lock()
 
-data = dataManipulator()
+data = DataManipulator()
 
 #displays the home page (code in home.html)
 @home.route('/home')
