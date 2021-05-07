@@ -41,6 +41,8 @@ $(document).ready(function() {
             playerId: sessionStorage.getItem('playerId')});
         return false;
     });
+
+    document.getElementById('playerName').innerHTML = sessionStorage.getItem('playerName')
 });
 
 fetch('/Word_of_the_Round/getPlayers')

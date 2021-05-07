@@ -13,10 +13,14 @@
     <h1>Game</h1>
     <span class="medium-br"></span>
     <form id="choosePrompt" method="POST" action='#'>
-        <button class="left button card" name="Prompt1" id="Prompt1" type="submit"></button>
-        <button class="center button card" name="Prompt2" id="Prompt2" type="submit"></button>
-        <button class="right button card" name="Prompt3" id="Prompt3" type="submit"></button>
+        <input class ="left mark" type="radio" value="prompt1" name="prompt" id="prompt1Mark"/>
+        <label class="left button card" for="prompt1Mark" id="Prompt1"></label>
+        <input class ="center mark" type="radio" value="prompt1" name="prompt" id="prompt2Mark"/>
+        <label class="center button card" for="prompt2Mark" id="Prompt2"></label>
+        <input class ="right mark" type="radio" value="prompt1" name="prompt" id="prompt3Mark"/>
+        <label class="right button card" for="prompt3Mark" id="Prompt3"></label>
     </form>
+    <div class="top-left" id="playerName"></div>
     <div class="bottom-right" id="playerScores"></div>
     <form id="leave" method="POST" action='#' class="bottom-left">
         <input type="submit" value="Leave Room">

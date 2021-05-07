@@ -38,14 +38,22 @@ h1 {
     margin-left: -20px !important;
     margin-top: -120%;
     opacity: 0;
-    transition: all 0.8s
+    transition: all 0.8s;
 }
 
 .button:active:after {
     padding: 0;
     margin: 0;
     opacity: 1;
-    transition: 0s
+    transition: 0s;
+}
+
+.mark {
+    display: none;
+}
+
+.mark:checked + .button {
+    background: #f1f1f1;
 }
 
 .center {
@@ -57,27 +65,36 @@ h1 {
 
 .left {
     position: absolute;
-    left: 75%;
+    left: 25%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
 }
 
 .right {
     position: absolute;
-    left: 25%;
+    left: 75%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
 }
 
 .bottom-right {
+    font-size: 28px;
     position: fixed;
     bottom: 2%;
     right: 2%;
 }
 
 .bottom-left {
+    font-size: 28px;
     position: fixed;
     bottom: 2%;
+    left: 2%;
+}
+
+.top-left {
+    font-size: 35px;
+    position: fixed;
+    top: 2%;
     left: 2%;
 }
 
