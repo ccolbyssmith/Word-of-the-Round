@@ -89,7 +89,8 @@ def readStartButton():
 @home.route('/getId', methods=['GET'])
 def getdata():
     if request.method == 'GET':
-        message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID'], 'host': data.isHost(session['myPlayerID'])}
+        message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID'], 
+            'myPlayerName': data.returnPlayerName(session['myPlayerID']), 'host': data.isHost(session['myPlayerID'])}
         return jsonify(message)
 
 @home.route('/getJoinError', methods=['GET'])

@@ -7,10 +7,13 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 from .. import socketio
 from . import game
 from ..models import DataManipulator
+from ..game.gameplay import CardHandler
 thread = None
 thread_lock = Lock()
 
 dataHelper = DataManipulator()
+promptHandler = CardHandler("prompts")
+wordHandler = CardHandler("words")
 
 @socketio.event
 def rejoin_lobby():
@@ -19,14 +22,28 @@ def rejoin_lobby():
     session['receive_count'] = session.get('receive_count', 0) + 1
 
 @socketio.event
-def leaveGame():
+def drawPrompts(info):
+    prompts = promptHandler.return3Cards(info['lobbyName'])
+    promptDict = {'prompt1': prompts[0], 'prompt2': prompts[1], 'prompt3': prompts[2]}
+    emit('displayPrompts', promptDict, to=info['lobbyName'])
+
+@socketio.event
+def drawWords(info):
+    words = WordHandler.return3Cards()
+    wordDict = {'word1': words[0], 'word2': words[1], 'word3': words[2]}
+    emit('displayWords', wordDict, to=info['lobbyName'])
+
+@socketio.event
+def leaveGame(info):
     print('Client Left Room')
     session['receive_count'] = session.get('receive_count', 0) + 1
-    leave_room(session['myLobbyName'])
+    leave_room(info['lobbyName'])
     destination = url_for('home.displayHomePage')
-    dataHelper.deletePlayer(session['myPlayerID'])
-    if dataHelper.returnPlayerCount(session['myLobbyName']) == 0:
-        dataHelper.deleteLobby(session['myLobbyName'])
+    dataHelper.deletePlayer(info['playerId'])
+    if dataHelper.returnPlayerCount(info['lobbyName']) == 0:
+        dataHelper.deleteLobby(info['lobbyName'])
+    host = dataHelper.host(info['lobbyName'])
+    emit("newHost", host, to=info['lobbyName'])
     emit('redirect', destination)
     session.pop("myLobbyName")
     session.pop('myPlayerID')

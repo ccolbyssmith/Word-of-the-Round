@@ -6,18 +6,34 @@ $(document).ready(function() {
 
     socket.on('connect', function() {
         socket.emit('rejoin_lobby');
+        if (sessionStorage.getItem('isHost') == 'true') {
+            socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
+        }
     });
 
     socket.on('redirect', function(destination, cb) {
-        console.log('works')
+        console.log('works');
         window.location.href = destination;
         socket.emit('disconnect_request');
         if (cb)
             cb();
     });
 
+    socket.on('displayPrompts', function(prompts) {
+        document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
+        document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
+        document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
+    });
+
+    socket.on('newHost', function(host) {
+        if (host == sessionStorage.getItem('playerId')) {
+            sessionStorage.setItem('isHost') = true;
+        }
+    });
+
     $('form#leave').submit(function(event) {
-        socket.emit('leaveGame');
+        socket.emit('leaveGame', {lobbyName: sessionStorage.getItem('lobbyName'), 
+            playerId: sessionStorage.getItem('playerId')});
         return false;
     });
 });
@@ -34,5 +50,15 @@ fetch('/Word_of_the_Round/getPlayers')
             linebreak = document.createElement("br");
             playerScores.appendChild(linebreak);
             playerScores.appendChild(player);
+        }
+    });
+
+fetch('/Word_of_the_Round/getJudge')
+	.then(response => response.json())
+	.then(judgeId => {
+		if (sessionStorage.getItem('playerId') != judgeId) {
+            document.getElementById('Prompt1').disabled = true;
+            document.getElementById('Prompt2').disabled = true;
+            document.getElementById('Prompt3').disabled = true;
         }
     });

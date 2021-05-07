@@ -37,9 +37,18 @@ class DataManipulator:
 		data[lobbyName]['settings'] = {'time_limit': settings['time_limit'],
 			'word_difficulty': settings['word_difficulty'], 'word_limit': settings['word_limit'],
 			'win_data': settings['win_data']}
+		playerList = json.loads(data[lobbyName]['players'])
+		for player in playerList:
+			playerLocation = self.findPlayerLocation(player['playerID'])[1]
+			if player['host'] == True:
+				playerList[playerLocation]['judge'] = True
+			else:
+				playerList[playerLocation]['judge'] = False
+		data[lobbyName]['players'] = json.dumps(playerList)
 		self.writeData(data)
 
 	def findPlayerLocation(self, soughtPlayerID):
+		print(soughtPlayerID)
 		data = self.loadData()
 		for lobby in json.loads(data['lobbies']):
 			count = 0
@@ -47,16 +56,6 @@ class DataManipulator:
 				if player['playerID'] == soughtPlayerID:
 					return [lobby, count]
 				count += 1
-
-	def findLobbyLocation(self, soughtLobbyName):
-		data = self.loadData()
-		lobbyList = json.loads(data['lobbies'])
-		count = 0;
-		for lobby in lobbyList:
-			if lobby['lobbyName'] == soughtLobbyName:
-				return count
-			count += 1
-		return -1
 
 	def lobbyIsNew(self, lobbyName):
 		return self.loadData()[lobbyName]['new']
@@ -76,6 +75,13 @@ class DataManipulator:
 		playerPosition = playerLocation[1]
 		playerList = json.loads(data[lobbyName]['players'])
 		return playerList[playerPosition]['host']
+
+	def host(self, lobbyName):
+		data = self.loadData()
+		playerList = json.loads(data[lobbyName]['players'])
+		for player in playerList:
+			if player['host'] == True:
+				return player['playerID']
 
 	def addPlayer(self, playerID, playerName, lobbyName):
 		data = self.loadData()
@@ -97,6 +103,7 @@ class DataManipulator:
 		if playerList[playerPosition]['host'] == True:
 			if len(playerList) > 1:
 				playerList[playerPosition + 1]['host'] = True
+		print(playerPosition)
 		playerList.pop(playerPosition)
 		data[lobbyName]['players'] = json.dumps(playerList)
 		self.writeData(data)
@@ -107,6 +114,12 @@ class DataManipulator:
 		for player in json.loads(data[lobbyName]['players']):
 			count += 1
 		return count
+
+	def getJudge(self, lobbyName):
+		data = self.loadData()
+		for player in json.loads(data[lobbyName]['players']):
+			if player['judge'] == True:
+				return player['playerID']
 
 	def returnSettings(self, lobbyName):
 		return self.loadData()[lobbyName]['settings']
@@ -126,3 +139,15 @@ class DataManipulator:
 	def createNewData(self):
 		data = {'lobbies': '[]'}
 		self.writeData(data)
+		with open('flaskr/data/promptDecks.json', 'w') as write_file:
+			json.dump({}, write_file)
+		with open('flaskr/data/wordDecks.json', 'w') as write_file:
+			json.dump({}, write_file)
+		with open('flaskr/data/currentPrompts.json', 'w') as write_file:
+			json.dump({}, write_file)
+		with open('flaskr/data/currentWords.json', 'w') as write_file:
+			json.dump({}, write_file)
+		with open('flaskr/data/chosenPrompts.json', 'w') as write_file:
+			json.dump({}, write_file)
+		with open('flaskr/data/chosenWords.json', 'w') as write_file:
+			json.dump({}, write_file)

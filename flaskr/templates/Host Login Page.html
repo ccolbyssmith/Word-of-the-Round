@@ -4,12 +4,13 @@
 <head>
 	<title>Player Login Page</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+	<script src="{{url_for('static', filename='js/creatorScript.js')}}"></script>
 </head>
 	
    <body>
       <form action="{{ url_for('home.readCreateGameButton') }}" method="post">
 		  <p align = "center">
-         	 Please enter your name: <input type = "text" name = "name" />
+         	 Please enter your name: <input type = "text" name = "name" id="name"/>
          	 <br> <br> <br> <br> 
 			 Ready to join the lobby? <button class="button" name="yesbuttonlogin" value="Yes!">Yes!</button>
 		  </p>

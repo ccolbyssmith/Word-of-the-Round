@@ -17,12 +17,15 @@ h1 {
     font-size: 28px;
     color: black;
     padding: 20px;
-    /*width: 200px;*/
     text-align: center;
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
+}
+
+.card {
+    width: 200px;
 }
 
 .button:after {

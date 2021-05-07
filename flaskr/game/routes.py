@@ -14,12 +14,16 @@ wordHandler = CardHandler("words")
 
 @game.route('/Phase1')
 def displayPhase1():
-    promptHandler.addLobby(session['myLobbyName']);
-    wordHandler.addLobby(session['myLobbyName']);
     return render_template('Game Part1.html');
 
 @game.route('/getSettings', methods=['GET'])
 def getSettings():
     if request.method == 'GET':
-        message = dataHelper.returnSettings()
+        message = dataHelper.returnSettings(session['myLobbyName'])
         return jsonify(message)
+
+@game.route('/getJudge', methods=['GET'])
+def getJudge():
+    if request.method == 'GET':
+        judgeId = dataHelper.getJudge(session['myLobbyName'])
+        return jsonify(judgeId)

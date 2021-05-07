@@ -24,11 +24,17 @@ def background_thread():
 @socketio.event
 def join_lobby(message):
     print('Client Joined Room')
+    if message['playerId'] == None:
+        playerID = session['myPlayerID']
+        lobbyName = session['myLobbyName']
+    else:
+        playerID = message['playerId']
+        lobbyName = dataHelper.findPlayerLocation(playerID)[0]
     join_room(session['myLobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
-         {'data': dataHelper.returnPlayerName(session['myPlayerID']) + ' HAS JOINED THE ROOM', 
-         'count': session['receive_count']}, to=session['myLobbyName'])
+         {'data': dataHelper.returnPlayerName(playerID) + ' HAS JOINED THE ROOM', 
+         'count': session['receive_count']}, to=lobbyName)
 
 #the event invoked to leave a lobby
 @socketio.event
@@ -36,9 +42,9 @@ def leave(message):
     print('Client Left Room')
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
-         {'data': dataHelper.returnPlayerName(session['myPlayerID']) + ' HAS LEFT THE ROOM', 
+         {'data': dataHelper.returnPlayerName(message['user']) + ' HAS LEFT THE ROOM', 
          'count': session['receive_count']}, to=session['myLobbyName'])
-    leave_room(session['myLobbyName'])
+    leave_room(dataHelper.findPlayerLocation(message['user'])[0])
     destination = url_for('home.displayHomePage')
     dataHelper.deletePlayer(session['myPlayerID'])
     if dataHelper.returnPlayerCount(session['myLobbyName']) == 0:
@@ -54,15 +60,15 @@ def my_room_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
          {'data': message['data'], 'count': session['receive_count'], 
-         'user': dataHelper.returnPlayerName(session['myPlayerID'])},
-         to=session['myLobbyName'])
+         'user': dataHelper.returnPlayerName(message['user'])},
+         to=dataHelper.findPlayerLocation(message['user'])[0])
 
 @socketio.event
 def start_game(settings):
     print('Started Game')
-    dataHelper.startGame(session['myLobbyName'], settings)
+    dataHelper.startGame(settings['lobbyName'], settings)
     destination = url_for('game.displayPhase1')
-    emit('redirect', destination, to=session['myLobbyName'])
+    emit('redirect', destination, to=settings['lobbyName'])
 
 #disconnects user from server
 @socketio.event

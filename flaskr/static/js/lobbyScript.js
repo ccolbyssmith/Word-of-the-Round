@@ -8,7 +8,8 @@ $(document).ready(function() {
     // The callback function is invoked when a connection with the
     // server is established.
     socket.on('connect', function() {
-        socket.emit('join_lobby', {});
+        console.log(sessionStorage.getItem('playerId'))
+        socket.emit('join_lobby', {playerId: sessionStorage.getItem('playerId')});
     });
 
     // Event handler for server sent data.
@@ -26,14 +27,9 @@ $(document).ready(function() {
                 }
 		        document.getElementById('player_list').innerHTML = "Players: " + playerString;
             });
-        fetch('/Word_of_the_Round/getId')
-	        .then(response => response.json())
-	        .then(id => {
-                console.log(id['host']);
-                if (id['host'] == true) {
-                    document.getElementById('start').style.display = "block";
-                }
-            });
+        if (sessionStorage.getItem('isHost') == 'true') {
+            document.getElementById('start').style.display = "block";
+        }
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
         if (cb)
             cb();
@@ -83,11 +79,12 @@ $(document).ready(function() {
     // These accept data from the user and send it to the server in a
     // variety of ways
     $('form#leave').submit(function(event) {
-        socket.emit('leave', {});
+        socket.emit('leave', {user: sessionStorage.getItem('playerId')});
         return false;
     });
     $('form#send_room').submit(function(event) {
-        socket.emit('my_room_event', {data: $('#room_data').val()});
+        socket.emit('my_room_event', {data: $('#room_data').val(), lobby: sessionStorage.getItem('lobbyName'), 
+            user: sessionStorage.getItem('playerId')});
         return false;
     });
     $('form#start').submit(function(event) {
@@ -95,7 +92,7 @@ $(document).ready(function() {
         socket.emit('start_game', {time_limit:  document.getElementById('Time Limit').value,
             word_difficulty: document.getElementById('Word Difficulty').value, 
             word_limit: document.getElementById('Word Count Limit').value,
-            win_data: document.getElementById('win_data').value});
+            win_data: document.getElementById('win_data').value, lobbyName: sessionStorage.getItem('lobbyName')});
         return false;
     });
 
@@ -112,10 +109,16 @@ $(document).ready(function() {
 fetch('/Word_of_the_Round/getId')
 	.then(response => response.json())
 	.then(id => {
-		var gameCode = id['myLobbyName'];
+        if (sessionStorage.getItem('playerId') == null) {
+            sessionStorage.setItem('playerId', id['myPlayerID']);
+            sessionStorage.setItem('lobbyName', id['myLobbyName']);
+            sessionStorage.setItem('isHost', id['host']);
+            sessionStorage.setItem('playerName', id['myPlayerName'])
+        }
+        var gameCode = sessionStorage.getItem('lobbyName');
 		document.getElementById('game_code').innerHTML = "Game Code: " + gameCode;
-        console.log(id['host'])
-        if (id['host'] == false) {
+        console.log(sessionStorage.getItem('isHost'));
+        if (sessionStorage.getItem('isHost') == "false") {
             document.getElementById('start').style.display = "none";
         }
     });
