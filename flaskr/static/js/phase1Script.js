@@ -6,7 +6,8 @@ $(document).ready(function() {
 
     socket.on('connect', function() {
         socket.emit('rejoin_lobby');
-        if (sessionStorage.getItem('isHost') == 'true') {
+        if (sessionStorage.getItem('isHost') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
+            sessionStorage.setItem('gotPrompts', true)
             socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
     });
@@ -27,7 +28,7 @@ $(document).ready(function() {
 
     socket.on('newHost', function(host) {
         if (host == sessionStorage.getItem('playerId')) {
-            sessionStorage.setItem('isHost') = true;
+            sessionStorage.setItem('isHost', true);
         }
     });
 
@@ -61,4 +62,13 @@ fetch('/Word_of_the_Round/getJudge')
             document.getElementById('Prompt2').disabled = true;
             document.getElementById('Prompt3').disabled = true;
         }
+    });
+
+var lobby = sessionStorage.getItem('lobbyName')
+fetch('/Word_of_the_Round/getPrompts/${lobby}')
+	.then(response => response.json())
+	.then(prompts => {
+		document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
+        document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
+        document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
     });

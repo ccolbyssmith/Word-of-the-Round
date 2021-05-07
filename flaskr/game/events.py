@@ -1,8 +1,9 @@
 from threading import Lock
 from flask import Flask, render_template, session, request, redirect, url_for, \
-    copy_current_request_context
+    copy_current_request_context, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
+import json
 
 from .. import socketio
 from . import game
@@ -47,3 +48,8 @@ def leaveGame(info):
     emit('redirect', destination)
     session.pop("myLobbyName")
     session.pop('myPlayerID')
+
+@game.route('/getPrompts/<lobby>', methods=['GET'])
+def getPrompts(lobby):
+    if request.method == 'GET':
+        return jsonify(promptHandler.getCurrentCards(lobby))
