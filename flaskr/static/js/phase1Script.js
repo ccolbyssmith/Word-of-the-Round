@@ -7,8 +7,11 @@ $(document).ready(function() {
     socket.on('connect', function() {
         socket.emit('rejoin_lobby');
         if (sessionStorage.getItem('isHost') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
-            sessionStorage.setItem('gotPrompts', true)
+            sessionStorage.setItem('gotPrompts', true);
             socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
+        }
+        else {
+            socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
     });
 
@@ -21,9 +24,10 @@ $(document).ready(function() {
     });
 
     socket.on('displayPrompts', function(prompts) {
-        document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
-        document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
-        document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
+        console.log(prompts)
+        document.getElementById('Prompt1').innerHTML = prompts['card1'];
+        document.getElementById('Prompt2').innerHTML = prompts['card2'];
+        document.getElementById('Prompt3').innerHTML = prompts['card3'];
     });
 
     socket.on('newHost', function(host) {
@@ -62,13 +66,4 @@ fetch('/Word_of_the_Round/getJudge')
             document.getElementById('Prompt2').disabled = true;
             document.getElementById('Prompt3').disabled = true;
         }
-    });
-
-var lobby = sessionStorage.getItem('lobbyName')
-fetch('/Word_of_the_Round/getPrompts/${lobby}')
-	.then(response => response.json())
-	.then(prompts => {
-		document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
-        document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
-        document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
     });

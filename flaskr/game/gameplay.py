@@ -50,8 +50,9 @@ class CardHandler:
 
 	def getCurrentCards(self, lobby):
 		with open(self.currentCardLocation, 'r') as read_file:
-				currentCards = json.load(read_file)
-				return currentCards[lobby]
+			currentCards = json.load(read_file)
+			print(currentCards[lobby])
+			return currentCards[lobby]
 
 	def saveChosenCard(self, card, lobby):
 		chosenCards = {}
@@ -63,8 +64,8 @@ class CardHandler:
 
 	def getChosenCard(self, lobby):
 		with open(self.chosenCardLocation, 'r') as read_file:
-				chosenCards = json.load(read_file)
-				return chosenCards[lobby]
+			chosenCards = json.load(read_file)
+			return chosenCards[lobby]
 
 	def useCard(self, deck, usedCard):
 		for card in deck:

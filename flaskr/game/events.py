@@ -24,9 +24,14 @@ def rejoin_lobby():
 
 @socketio.event
 def drawPrompts(info):
-    prompts = promptHandler.return3Cards(info['lobbyName'])
-    promptDict = {'prompt1': prompts[0], 'prompt2': prompts[1], 'prompt3': prompts[2]}
-    emit('displayPrompts', promptDict, to=info['lobbyName'])
+    promptHandler.return3Cards(info['lobbyName'])
+    prompts = promptHandler.getCurrentCards(info['lobbyName'])
+    emit('displayPrompts', prompts, to=info['lobbyName'])
+
+@socketio.event
+def loadPrompts(info):
+    prompts = promptHandler.getCurrentCards(info['lobbyName'])
+    emit('displayPrompts', prompts, to=info['lobbyName'])
 
 @socketio.event
 def drawWords(info):
@@ -48,8 +53,3 @@ def leaveGame(info):
     emit('redirect', destination)
     session.pop("myLobbyName")
     session.pop('myPlayerID')
-
-@game.route('/getPrompts/<lobby>', methods=['GET'])
-def getPrompts(lobby):
-    if request.method == 'GET':
-        return jsonify(promptHandler.getCurrentCards(lobby))
