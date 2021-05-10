@@ -68,6 +68,7 @@ $(document).ready(function() {
     });
 
     $('form#leave').submit(function(event) {
+        sessionStorage.setItem('gotPrompts', false);
         socket.emit('leaveGame', {lobbyName: sessionStorage.getItem('lobbyName'), 
             playerId: sessionStorage.getItem('playerId')});
         return false;
