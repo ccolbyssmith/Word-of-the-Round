@@ -75,9 +75,24 @@ $(document).ready(function() {
     });
 
     $('form#submitPrompt').submit(function(event) {
-        comsole.log('submitting');
-        promptButtonId = document.getElementByName('prompt').value;
-        wordButtonId = document.getElementByName('word').value;
+        var promptButtonId;
+        var wordButtonId;
+        if (document.getElementById('prompt1Mark').checked) {
+            promptButtonId = document.getElementById('prompt1Mark').value;
+        } else if (document.getElementById('prompt2Mark').checked) {
+            promptButtonId = document.getElementById('prompt2Mark').value;
+        } else if (document.getElementById('prompt3Mark').checked) {
+            promptButtonId = document.getElementById('prompt3Mark').value;
+        }
+        if (document.getElementById('word1Mark').checked) {
+            wordButtonId = document.getElementById('word1Mark').value;
+        } else if (document.getElementById('word2Mark').checked) {
+            wordButtonId = document.getElementById('word2Mark').value;
+        } else if (document.getElementById('word3Mark').checked) {
+            wordButtonId = document.getElementById('word3Mark').value;
+        }
+        console.log(promptButtonId);
+        console.log(wordButtonId);
         socket.emit('submitPrompt', {lobbyName: sessionStorage.getItem('lobbyName'), 
              prompt: document.getElementById(promptButtonId).innerHTML, 
              word: document.getElementById(wordButtonId).innerHTML});

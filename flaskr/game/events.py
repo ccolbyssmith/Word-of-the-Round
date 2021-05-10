@@ -74,8 +74,8 @@ def loadPlayerScores(identification):
 @socketio.event
 def submitPrompt(info):
     print('phase 2')
-    promptHandler.saveChosenPrompt(info['prompt'], info['lobbyName'])
-    wordHandler.saveChosenPrompt(info['word'], info['lobbyName'])
+    promptHandler.saveChosenCard(info['prompt'], info['lobbyName'])
+    wordHandler.saveChosenCard(info['word'], info['lobbyName'])
     destination = url_for('game.displayPhase2')
     emit('redirect', destination, to=info['lobbyName'])
 
