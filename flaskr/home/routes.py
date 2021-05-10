@@ -98,12 +98,3 @@ def getJoinError():
     if request.method == 'GET':
         message = {'joinError': session['joinError']}
         return jsonify(message)
-
-@home.route('/getPlayers', methods=['GET'])
-def getPlayers():
-    if request.method == 'GET':
-        playerList = data.loadPlayerList(session['myLobbyName'])
-        playerNames = []
-        for player in playerList:
-            playerNames.append(player['playerName'])
-        return jsonify(playerNames)

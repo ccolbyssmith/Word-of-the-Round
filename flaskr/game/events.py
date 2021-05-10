@@ -40,6 +40,21 @@ def drawWords(info):
     emit('displayWords', wordDict, to=info['lobbyName'])
 
 @socketio.event
+def loadInfo(identification):
+    settings = dataHelper.returnSettings(identification['lobbyName'])
+    judgeId = dataHelper.getJudge(identification['lobbyName'])
+    settings['judgeId'] = judgeId
+    emit('getInfo', settings, to=identification['lobbyName'])
+
+@socketio.event
+def loadPlayerScores(identification):
+    playerList = dataHelper.loadPlayerList(identification['lobbyName'])
+    playerNames = []
+    for player in playerList:
+        playerNames.append(player['playerName'])
+    emit('displayPlayerScores', playerNames)
+
+@socketio.event
 def leaveGame(info):
     print('Client Left Room')
     session['receive_count'] = session.get('receive_count', 0) + 1

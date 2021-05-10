@@ -13,6 +13,8 @@ $(document).ready(function() {
         else {
             socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
+        socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
+        socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')})
     });
 
     socket.on('redirect', function(destination, cb) {
@@ -30,9 +32,35 @@ $(document).ready(function() {
         document.getElementById('Prompt3').innerHTML = prompts['card3'];
     });
 
+    socket.on('displayPlayerScores', function(players) {
+        for (i = 0; i < players.length; i++) {
+            if (document.getElementById("playerScores").children[i + 1] == null) {
+                var player = document.createElement("player" + i.toString());
+                player.id = players[i]
+                var text = document.createTextNode(players[i] + ": 0");
+                player.appendChild(text);
+                var playerScores = document.getElementById("playerScores");
+                linebreak = document.createElement("br");
+                playerScores.appendChild(linebreak);
+                playerScores.appendChild(player);
+            } else {
+                var player = document.getElementById(players[i]);
+                player.innerHTML = players[i] + ": 0"
+            }
+        }
+    });
+
     socket.on('newHost', function(host) {
         if (host == sessionStorage.getItem('playerId')) {
             sessionStorage.setItem('isHost', true);
+        }
+    });
+
+    socket.on('getInfo', function(info) {
+        if (sessionStorage.getItem('playerId') != info['judgeId']) {
+            document.getElementById('Prompt1').disabled = true;
+            document.getElementById('Prompt2').disabled = true;
+            document.getElementById('Prompt3').disabled = true;
         }
     });
 
@@ -44,28 +72,3 @@ $(document).ready(function() {
 
     document.getElementById('playerName').innerHTML = sessionStorage.getItem('playerName')
 });
-
-fetch('/Word_of_the_Round/getPlayers')
-	.then(response => response.json())
-	.then(players => {
-        console.log(players);
-        for (i = 0; i < players.length; i++) {
-            var player = document.createElement("player" + i.toString());
-            var text = document.createTextNode(players[i] + ": 0");
-            player.appendChild(text);
-            var playerScores = document.getElementById("playerScores");
-            linebreak = document.createElement("br");
-            playerScores.appendChild(linebreak);
-            playerScores.appendChild(player);
-        }
-    });
-
-fetch('/Word_of_the_Round/getJudge')
-	.then(response => response.json())
-	.then(judgeId => {
-		if (sessionStorage.getItem('playerId') != judgeId) {
-            document.getElementById('Prompt1').disabled = true;
-            document.getElementById('Prompt2').disabled = true;
-            document.getElementById('Prompt3').disabled = true;
-        }
-    });

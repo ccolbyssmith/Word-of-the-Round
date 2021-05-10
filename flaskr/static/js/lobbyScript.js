@@ -17,22 +17,21 @@ $(document).ready(function() {
     // to the client. The data is then displayed in the "Received"
     // section of the page.
     socket.on('server_response', function(msg, cb) {
-        fetch('/Word_of_the_Round/getPlayers')
-	        .then(response => response.json())
-	        .then(players => {
-                console.log(players);
-                var playerString = players[0];
-                for (i = 1; i < players.length; i++) {
-                    playerString = playerString +  ", " + players[i];
-                }
-		        document.getElementById('player_list').innerHTML = "Players: " + playerString;
-            });
+        socket.emit('loadPlayerList', {lobbyName: sessionStorage.getItem('lobbyName')})
         if (sessionStorage.getItem('isHost') == 'true') {
             document.getElementById('start').style.display = "block";
         }
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
         if (cb)
             cb();
+    });
+
+    socket.on('displayPlayerList', function(players) {
+        var playerString = players[0];
+        for (i = 1; i < players.length; i++) {
+            playerString = playerString +  ", " + players[i];
+        }
+		document.getElementById('player_list').innerHTML = "Players: " + playerString;
     });
 
     socket.on('my_response', function(msg, cb) {

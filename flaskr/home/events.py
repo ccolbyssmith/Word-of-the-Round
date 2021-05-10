@@ -70,6 +70,14 @@ def start_game(settings):
     destination = url_for('game.displayPhase1')
     emit('redirect', destination, to=settings['lobbyName'])
 
+@socketio.event
+def loadPlayerList(identification):
+    playerList = dataHelper.loadPlayerList(identification['lobbyName'])
+    playerNames = []
+    for player in playerList:
+        playerNames.append(player['playerName'])
+    emit('displayPlayerList', playerNames, to=identification['lobbyName'])
+
 #disconnects user from server
 @socketio.event
 def disconnect_request():
