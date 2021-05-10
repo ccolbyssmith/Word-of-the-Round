@@ -93,9 +93,11 @@ $(document).ready(function() {
         }
         console.log(promptButtonId);
         console.log(wordButtonId);
-        socket.emit('submitPrompt', {lobbyName: sessionStorage.getItem('lobbyName'), 
-             prompt: document.getElementById(promptButtonId).innerHTML, 
-             word: document.getElementById(wordButtonId).innerHTML});
+        if(promptButtonId != null && wordButtonId != null) {
+            socket.emit('submitPrompt', {lobbyName: sessionStorage.getItem('lobbyName'), 
+                prompt: document.getElementById(promptButtonId).innerHTML, 
+                word: document.getElementById(wordButtonId).innerHTML});
+        }
         return false;
     });
 
