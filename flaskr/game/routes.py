@@ -15,3 +15,7 @@ wordHandler = CardHandler("words")
 @game.route('/Phase1')
 def displayPhase1():
     return render_template('Game Part1.html');
+
+@game.route('/Phase2')
+def displayPhase2():
+    return render_template('Game Part2.html');

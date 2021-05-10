@@ -40,18 +40,20 @@ def join_lobby(message):
 @socketio.event
 def leave(message):
     print('Client Left Room')
+    print(message['lobbyName'])
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
          {'data': dataHelper.returnPlayerName(message['user']) + ' HAS LEFT THE ROOM', 
-         'count': session['receive_count']}, to=session['myLobbyName'])
+         'count': session['receive_count']}, to=message['lobbyName'])
     leave_room(dataHelper.findPlayerLocation(message['user'])[0])
     destination = url_for('home.displayHomePage')
-    dataHelper.deletePlayer(session['myPlayerID'])
-    if dataHelper.returnPlayerCount(session['myLobbyName']) == 0:
-        dataHelper.deleteLobby(session['myLobbyName'])
+    dataHelper.deletePlayer(message['user'])
+    if dataHelper.returnPlayerCount(message['lobbyName']) == 0:
+        dataHelper.deleteLobby(message['lobbyName'])
+    else:
+        host = dataHelper.getHost(info['lobbyName'])
+        emit("newHost", host, to=message['lobbyName'])
     emit('redirect', destination)
-    session.pop("myLobbyName")
-    session.pop('myPlayerID')
 
 #the event invoked to send a message in a lobby
 @socketio.event
@@ -69,6 +71,14 @@ def start_game(settings):
     dataHelper.startGame(settings['lobbyName'], settings)
     destination = url_for('game.displayPhase1')
     emit('redirect', destination, to=settings['lobbyName'])
+
+@socketio.event
+def loadNewHost(identification):
+    playerList = dataHelper.loadPlayerList(identification['lobbyName'])
+    playerNames = []
+    for player in playerList:
+        playerNames.append(player['playerName'])
+    emit('displayPlayerList', playerNames, to=identification['lobbyName'])
 
 @socketio.event
 def loadPlayerList(identification):

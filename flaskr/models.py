@@ -76,7 +76,7 @@ class DataManipulator:
 		playerList = json.loads(data[lobbyName]['players'])
 		return playerList[playerPosition]['host']
 
-	def host(self, lobbyName):
+	def getHost(self, lobbyName):
 		data = self.loadData()
 		playerList = json.loads(data[lobbyName]['players'])
 		for player in playerList:

@@ -14,7 +14,7 @@ $(document).ready(function() {
             socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
         socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
-        socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')})
+        socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
     socket.on('redirect', function(destination, cb) {
@@ -27,9 +27,12 @@ $(document).ready(function() {
 
     socket.on('displayPrompts', function(prompts) {
         console.log(prompts)
-        document.getElementById('Prompt1').innerHTML = prompts['card1'];
-        document.getElementById('Prompt2').innerHTML = prompts['card2'];
-        document.getElementById('Prompt3').innerHTML = prompts['card3'];
+        document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
+        document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
+        document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
+        document.getElementById('Word1').innerHTML = prompts['word1'];
+        document.getElementById('Word2').innerHTML = prompts['word2'];
+        document.getElementById('Word3').innerHTML = prompts['word3'];
     });
 
     socket.on('displayPlayerScores', function(players) {
@@ -68,6 +71,22 @@ $(document).ready(function() {
         socket.emit('leaveGame', {lobbyName: sessionStorage.getItem('lobbyName'), 
             playerId: sessionStorage.getItem('playerId')});
         return false;
+    });
+
+    $('form#submitPrompt').submit(function(event) {
+        comsole.log('submitting');
+        promptButtonId = document.getElementByName('prompt').value;
+        wordButtonId = document.getElementByName('word').value;
+        socket.emit('submitPrompt', {lobbyName: sessionStorage.getItem('lobbyName'), 
+             prompt: document.getElementById(promptButtonId).innerHTML, 
+             word: document.getElementById(wordButtonId).innerHTML});
+        return false;
+    });
+
+    socket.on('redirect', function(destination) {
+        console.log('works');
+        window.location.href = destination;
+        socket.emit('disconnect_request');
     });
 
     document.getElementById('playerName').innerHTML = sessionStorage.getItem('playerName')

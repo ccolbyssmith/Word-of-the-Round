@@ -8,7 +8,7 @@ $(document).ready(function() {
     // The callback function is invoked when a connection with the
     // server is established.
     socket.on('connect', function() {
-        console.log(sessionStorage.getItem('playerId'))
+        console.log(sessionStorage.getItem('playerId'));
         socket.emit('join_lobby', {playerId: sessionStorage.getItem('playerId')});
     });
 
@@ -17,13 +17,19 @@ $(document).ready(function() {
     // to the client. The data is then displayed in the "Received"
     // section of the page.
     socket.on('server_response', function(msg, cb) {
-        socket.emit('loadPlayerList', {lobbyName: sessionStorage.getItem('lobbyName')})
-        if (sessionStorage.getItem('isHost') == 'true') {
-            document.getElementById('start').style.display = "block";
-        }
+        socket.emit('loadPlayerList', {lobbyName: sessionStorage.getItem('lobbyName')});
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
         if (cb)
             cb();
+    });
+
+    socket.on('newHost', function(host) {
+        if (host == sessionStorage.getItem('playerId')) {
+            sessionStorage.setItem('isHost', true);
+        }
+        if (sessionStorage.getItem('isHost') == 'true') {
+            document.getElementById('start').style.display = "block";
+        }
     });
 
     socket.on('displayPlayerList', function(players) {
@@ -78,7 +84,8 @@ $(document).ready(function() {
     // These accept data from the user and send it to the server in a
     // variety of ways
     $('form#leave').submit(function(event) {
-        socket.emit('leave', {user: sessionStorage.getItem('playerId')});
+        socket.emit('leave', {user: sessionStorage.getItem('playerId'),
+            lobbyName: sessionStorage.getItem('lobbyName')});
         return false;
     });
     $('form#send_room').submit(function(event) {
@@ -108,7 +115,7 @@ $(document).ready(function() {
 fetch('/Word_of_the_Round/getId')
 	.then(response => response.json())
 	.then(id => {
-        if (sessionStorage.getItem('playerId') == null) {
+        if (sessionStorage.getItem('lobbyName') != id['myLobbyName']) {
             sessionStorage.setItem('playerId', id['myPlayerID']);
             sessionStorage.setItem('lobbyName', id['myLobbyName']);
             sessionStorage.setItem('isHost', id['host']);

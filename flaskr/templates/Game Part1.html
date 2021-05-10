@@ -10,15 +10,32 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
 </head>
 <body>
-    <h1>Game</h1>
+    <h1>Choosing Prompt</h1>
     <span class="medium-br"></span>
     <form id="choosePrompt" method="POST" action='#'>
-        <input class ="left mark" type="radio" value="prompt1" name="prompt" id="prompt1Mark"/>
+        <input class="left mark" type="radio" value="Prompt1" name="prompt" id="prompt1Mark" />
         <label class="left button card" for="prompt1Mark" id="Prompt1"></label>
-        <input class ="center mark" type="radio" value="prompt1" name="prompt" id="prompt2Mark"/>
+        <input class="center mark" type="radio" value="Prompt1" name="prompt" id="prompt2Mark" />
         <label class="center button card" for="prompt2Mark" id="Prompt2"></label>
-        <input class ="right mark" type="radio" value="prompt1" name="prompt" id="prompt3Mark"/>
+        <input class="right mark" type="radio" value="Prompt1" name="prompt" id="prompt3Mark" />
         <label class="right button card" for="prompt3Mark" id="Prompt3"></label>
+    </form>
+    <br>
+    <span class="large-br"></span>
+    <br>
+    <span class="medium-br"></span>
+    <form id="chooseWord" method="POST" action='#'>
+        <input class="left mark" type="radio" value="Word1" name="word" id="word1Mark" />
+        <label class="left button card" for="word1Mark" id="Word1"></label>
+        <input class="center mark" type="radio" value="Word2" name="word" id="word2Mark" />
+        <label class="center button card" for="word2Mark" id="Word2"></label>
+        <input class="right mark" type="radio" value="Word3" name="word" id="word3Mark" />
+        <label class="right button card" for="word3Mark" id="Word3"></label>
+    </form>
+    <br>
+    <span class="medium-br"></span>
+    <form id="submitPrompt" method="POST" action='#'>
+        <button class="center button" name="nextPhaseButton" value="submittedPrompts" type="submit">Submit</button>
     </form>
     <div class="top-left" id="playerName"></div>
     <div class="bottom-right" id="playerScores"></div>

@@ -25,12 +25,29 @@ def rejoin_lobby():
 @socketio.event
 def drawPrompts(info):
     promptHandler.return3Cards(info['lobbyName'])
-    prompts = promptHandler.getCurrentCards(info['lobbyName'])
+    currentPrompts = promptHandler.getCurrentCards(info['lobbyName'])
+    prompts = {}
+    prompts['prompt1'] = currentPrompts['card1']
+    prompts['prompt2'] = currentPrompts['card2']
+    prompts['prompt3'] = currentPrompts['card3']
+    wordHandler.return3Cards(info['lobbyName'])
+    currentWords = wordHandler.getCurrentCards(info['lobbyName'])
+    prompts['word1'] = currentWords['card1']
+    prompts['word2'] = currentWords['card2']
+    prompts['word3'] = currentWords['card3']
     emit('displayPrompts', prompts, to=info['lobbyName'])
 
 @socketio.event
 def loadPrompts(info):
-    prompts = promptHandler.getCurrentCards(info['lobbyName'])
+    currentPrompts = promptHandler.getCurrentCards(info['lobbyName'])
+    prompts = {}
+    prompts['prompt1'] = currentPrompts['card1']
+    prompts['prompt2'] = currentPrompts['card2']
+    prompts['prompt3'] = currentPrompts['card3']
+    currentWords = wordHandler.getCurrentCards(info['lobbyName'])
+    prompts['word1'] = currentWords['card1']
+    prompts['word2'] = currentWords['card2']
+    prompts['word3'] = currentWords['card3']
     emit('displayPrompts', prompts, to=info['lobbyName'])
 
 @socketio.event
@@ -55,6 +72,14 @@ def loadPlayerScores(identification):
     emit('displayPlayerScores', playerNames)
 
 @socketio.event
+def submitPrompt(info):
+    print('phase 2')
+    promptHandler.saveChosenPrompt(info['prompt'], info['lobbyName'])
+    wordHandler.saveChosenPrompt(info['word'], info['lobbyName'])
+    destination = url_for('game.displayPhase2')
+    emit('redirect', destination, to=info['lobbyName'])
+
+@socketio.event
 def leaveGame(info):
     print('Client Left Room')
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -63,8 +88,9 @@ def leaveGame(info):
     dataHelper.deletePlayer(info['playerId'])
     if dataHelper.returnPlayerCount(info['lobbyName']) == 0:
         dataHelper.deleteLobby(info['lobbyName'])
-    host = dataHelper.host(info['lobbyName'])
-    emit("newHost", host, to=info['lobbyName'])
+    else:
+        host = dataHelper.getHost(info['lobbyName'])
+        emit("newHost", host, to=info['lobbyName'])
     emit('redirect', destination)
     session.pop("myLobbyName")
     session.pop('myPlayerID')
