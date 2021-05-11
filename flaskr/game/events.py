@@ -83,5 +83,3 @@ def leaveGame(info):
         host = dataHelper.getHost(info['lobbyName'])
         emit("newHost", host, to=info['lobbyName'])
     emit('redirect', destination)
-    session.pop("myLobbyName")
-    session.pop('myPlayerID')
