@@ -1,1 +1,1 @@
-{"lobbies": "[]"}
+{"lobbies": "[\"bf9f6e5f\"]", "bf9f6e5f": {"started": true, "players": "[{\"playerID\": \"fd0926e1-c656-48f1-be7a-08a2e760a96e\", \"playerName\": \"Colby Smith\", \"host\": true, \"judge\": true}, {\"playerID\": \"332e81b4-9c70-4c5a-9fdc-2ef87373331d\", \"playerName\": \"IceFire\", \"host\": false, \"judge\": false}]", "settings": {"time_limit": "30", "word_difficulty": "easy", "word_limit": "50", "win_data": "5"}}}

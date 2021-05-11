@@ -39,54 +39,11 @@ def displayLobby():
 def displayLoginPage():
     return render_template('Host Login Page.html')
 
-#redirects the user to a newly generated lobby
-@home.route('/readCreateGameButton', methods=['POST'])
-def readCreateGameButton():
-    urlSuffix = ''
-    if request.form.get('yesbuttonlogin') == 'Yes!':
-        urlSuffix = '/lobby'
-        myPlayerID = str(uuid.uuid4())
-        myPlayerName = name=request.form.get('name')
-        myLobbyName = str(uuid.uuid4()).split('-')[0]
-        data.addLobby(newLobbyName=myLobbyName)
-        data.addPlayer(playerID=myPlayerID, playerName=myPlayerName, lobbyName=myLobbyName)
-        session['myLobbyName'] = myLobbyName
-        session['myPlayerID'] = myPlayerID
-    prefix = request.path.rsplit('/', 1)[0]
-    return redirect(prefix + urlSuffix) 
-
 #displays the joinee login page
 @home.route('/joineeLoginPage')
 def displayHostLoginPage():
     print(session['joinError'])
     return render_template('Joinee Login Page.html')
-
-#redirects the user to an already existing lobby
-@home.route('/readJoinGameButton', methods=['POST'])
-def readJoinGameButton():
-    urlSuffix = ''
-    if request.form.get('yesbuttonlogin') == 'Yes!':
-        myLobbyName = request.form.get('game id')
-        if data.lobbyExists(myLobbyName) and data.gameStarted(myLobbyName) == False:
-            urlSuffix = '/lobby'
-            myPlayerID = str(uuid.uuid4())
-            myPlayerName = name=request.form.get('name')
-            data.addPlayer(playerID=myPlayerID, playerName=myPlayerName, lobbyName=myLobbyName)
-            session['myLobbyName'] = myLobbyName
-            session['myPlayerID'] = myPlayerID
-        else:
-            urlSuffix = '/joineeLoginPage'
-            session['joinError'] = True
-    prefix = request.path.rsplit('/', 1)[0]
-    return redirect(prefix + urlSuffix)
-    
-#returns playerID and lobbyName for javascript to use
-@home.route('/getId', methods=['GET'])
-def getdata():
-    if request.method == 'GET':
-        message = {'myLobbyName': session['myLobbyName'], 'myPlayerID': session['myPlayerID'], 
-            'myPlayerName': data.returnPlayerName(session['myPlayerID']), 'host': data.isHost(session['myPlayerID'])}
-        return jsonify(message)
 
 @home.route('/getJoinError', methods=['GET'])
 def getJoinError():
