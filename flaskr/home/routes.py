@@ -44,9 +44,3 @@ def displayLoginPage():
 def displayHostLoginPage():
     print(session['joinError'])
     return render_template('Joinee Login Page.html')
-
-@home.route('/getJoinError', methods=['GET'])
-def getJoinError():
-    if request.method == 'GET':
-        message = {'joinError': session['joinError']}
-        return jsonify(message)

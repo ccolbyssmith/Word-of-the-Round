@@ -5,7 +5,6 @@ $(document).ready(function() {
     var socket = io();
 
 	$('form#joinLobby').submit(function(event) {
-        console.log('right Function')
         socket.emit('joiningLobby', {playerName: document.getElementById('name').value, 
             lobbyName: document.getElementById('game id').value});
         return false;
@@ -20,20 +19,7 @@ $(document).ready(function() {
         socket.emit('disconnect_request');
     });
 
-    socket.on('refresh', function() {
-        location.reload();
+    socket.on('error', function() {
+        document.getElementById('error').innerHTML = 'Error: Invalid Game ID'
     });
 });
-
-fetch('/Word_of_the_Round/getJoinError')
-	.then(response => response.json())
-	.then(errorValue => {
-		var joinError = errorValue['joinError']
-		var errorMsg = ''
-		if (joinError == true) {
-			errorMsg = 'This Lobby Does Not Exist'
-		} else {
-			errorMsg = ''
-		}
-		document.getElementById('error').innerHTML = errorMsg
-	});

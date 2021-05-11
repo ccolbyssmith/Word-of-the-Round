@@ -43,8 +43,7 @@ def joiningLobby(info):
         emit('redirect', {'lobbyName': myLobbyName, 'playerId': myPlayerID, 'playerName': myPlayerName, 
             'destination': destination, 'host': False})
     else:
-        session['joinError'] = True
-        emit('refresh')
+        emit('error')
     
 
 #the event invoked to join a lobby
