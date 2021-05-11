@@ -5,16 +5,17 @@ $(document).ready(function() {
     var socket = io();
 
     socket.on('connect', function() {
-        socket.emit('rejoin_lobby');
+        socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
         if (sessionStorage.getItem('isHost') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
             sessionStorage.setItem('gotPrompts', true);
             socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
-        else {
-            socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
-        }
         socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
+    });
+
+    socket.on('drewPrompts', function() {
+        socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
     socket.on('redirect', function(destination, cb) {
@@ -37,7 +38,7 @@ $(document).ready(function() {
 
     socket.on('displayPlayerScores', function(players) {
         for (i = 0; i < players.length; i++) {
-            if (document.getElementById("playerScores").children[i + 1] == null) {
+            if (document.getElementById("playerScores").children[i*2 + 1] == null) {
                 var player = document.createElement("player" + i.toString());
                 player.id = players[i]
                 var text = document.createTextNode(players[i] + ": 0");

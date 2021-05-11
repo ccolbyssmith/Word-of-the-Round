@@ -9,6 +9,7 @@ from . import home
 from ..models import DataManipulator
 thread = None
 thread_lock = Lock()
+import uuid
 
 dataHelper = DataManipulator()
 
@@ -20,17 +21,39 @@ def background_thread():
         socketio.sleep(10)
         count += 1
 
+@socketio.event
+def hostLobby(info):
+    myPlayerID = str(uuid.uuid4())
+    myPlayerName = info['playerName']
+    myLobbyName = str(uuid.uuid4()).split('-')[0]
+    dataHelper.addLobby(newLobbyName=myLobbyName)
+    dataHelper.addPlayer(playerID=myPlayerID, playerName=myPlayerName, lobbyName=myLobbyName)
+    destination = url_for('home.displayLobby')
+    emit('redirect', {'lobbyName': myLobbyName, 'playerId': myPlayerID, 'playerName': myPlayerName, 
+        'destination': destination, 'host': True})
+
+@socketio.event
+def joiningLobby(info):
+    if dataHelper.lobbyExists(info['lobbyName']) and dataHelper.gameStarted(info['lobbyName']) == False:
+        myPlayerID = str(uuid.uuid4())
+        myPlayerName = info['playerName']
+        myLobbyName = info['lobbyName']
+        dataHelper.addPlayer(playerID=myPlayerID, playerName=myPlayerName, lobbyName=myLobbyName)
+        destination = url_for('home.displayLobby')
+        emit('redirect', {'lobbyName': myLobbyName, 'playerId': myPlayerID, 'playerName': myPlayerName, 
+            'destination': destination, 'host': False})
+    else:
+        session['joinError'] = True
+        emit('refresh')
+    
+
 #the event invoked to join a lobby
 @socketio.event
 def join_lobby(message):
     print('Client Joined Room')
-    if message['playerId'] == None:
-        playerID = session['myPlayerID']
-        lobbyName = session['myLobbyName']
-    else:
-        playerID = message['playerId']
-        lobbyName = dataHelper.findPlayerLocation(playerID)[0]
-    join_room(session['myLobbyName'])
+    playerID = message['playerId']
+    lobbyName = dataHelper.findPlayerLocation(playerID)[0]
+    join_room(lobbyName)
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
          {'data': dataHelper.returnPlayerName(playerID) + ' HAS JOINED THE ROOM', 

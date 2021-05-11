@@ -108,23 +108,13 @@ $(document).ready(function() {
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function() {
-      output.innerHTML = this.value;
-}
-});
+        output.innerHTML = this.value;
+    }
 
-fetch('/Word_of_the_Round/getId')
-	.then(response => response.json())
-	.then(id => {
-        if (sessionStorage.getItem('lobbyName') != id['myLobbyName']) {
-            sessionStorage.setItem('playerId', id['myPlayerID']);
-            sessionStorage.setItem('lobbyName', id['myLobbyName']);
-            sessionStorage.setItem('isHost', id['host']);
-            sessionStorage.setItem('playerName', id['myPlayerName'])
-        }
-        var gameCode = sessionStorage.getItem('lobbyName');
-		document.getElementById('game_code').innerHTML = "Game Code: " + gameCode;
-        console.log(sessionStorage.getItem('isHost'));
-        if (sessionStorage.getItem('isHost') == "false") {
-            document.getElementById('start').style.display = "none";
-        }
-    });
+    var gameCode = sessionStorage.getItem('lobbyName');
+    document.getElementById('game_code').innerHTML = "Game Code: " + gameCode;
+    console.log(sessionStorage.getItem('isHost'));
+    if (sessionStorage.getItem('isHost') == "false") {
+        document.getElementById('start').style.display = "none";
+    }
+});
