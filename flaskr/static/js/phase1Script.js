@@ -9,12 +9,15 @@ $(document).ready(function() {
         if (sessionStorage.getItem('isHost') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
             sessionStorage.setItem('gotPrompts', true);
             socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
+        } else if (sessionStorage.getItem('gotPrompts') == 'true') {
+             socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
         socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
     socket.on('drewPrompts', function() {
+        sessionStorage.setItem('gotPrompts', 'true');
         socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
@@ -62,9 +65,13 @@ $(document).ready(function() {
 
     socket.on('getInfo', function(info) {
         if (sessionStorage.getItem('playerId') != info['judgeId']) {
-            document.getElementById('Prompt1').disabled = true;
-            document.getElementById('Prompt2').disabled = true;
-            document.getElementById('Prompt3').disabled = true;
+            document.getElementById('prompt1Mark').disabled = true;
+            document.getElementById('prompt2Mark').disabled = true;
+            document.getElementById('prompt3Mark').disabled = true;
+            document.getElementById('word1Mark').disabled = true;
+            document.getElementById('word2Mark').disabled = true;
+            document.getElementById('word3Mark').disabled = true;
+            document.getElementById('submitPrompt').style.display = 'none';
         }
     });
 

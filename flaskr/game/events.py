@@ -39,7 +39,7 @@ def loadPrompts(info):
     prompts['word1'] = currentWords['card1']
     prompts['word2'] = currentWords['card2']
     prompts['word3'] = currentWords['card3']
-    emit('displayPrompts', prompts, to=info['lobbyName'])
+    emit('displayPrompts', prompts)
 
 @socketio.event
 def drawWords(info):
