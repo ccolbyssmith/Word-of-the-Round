@@ -6,9 +6,8 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
 </head>
 	
-   <body>
-      <form action="{{ url_for('home.readCreateGameButton') }}" method="post">
-		  <p align = "left">
+<body>
+	<p align="left">
 		Here are reminders of the prompt and word you chose:
 		<br>
 		Prompt: [insert prompt]
@@ -16,11 +15,26 @@
 		Word: [insert word]
 		<br><br><br><br>
 		Now, please select the best player response:
-		<button class="button" name="playerresponse1" value="[whatever player 1 wrote]">whateverplayer1wrote</button>
-		  </p>
-
-		Are you ready to submit? <button class="button" name="yesbuttonjudgechoosingcard" value="Yes!">Yes!</button>
-      </form>
-   </body>
+	</p>
+	<form id="chooseWord" method="POST" action='#'>
+		<input class="left mark" type="radio" value="Word1" name="word" id="word1Mark" />
+		<label class="left button card" for="word1Mark" id="Word1"></label>
+		<input class="center mark" type="radio" value="Word2" name="word" id="word2Mark" />
+		<label class="center button card" for="word2Mark" id="Word2"></label>
+		<input class="right mark" type="radio" value="Word3" name="word" id="word3Mark" />
+		<label class="right button card" for="word3Mark" id="Word3"></label>
+	</form>
+	<form id="choosePrompt" method="POST" action='#'>
+		<input class="left mark" type="radio" value="Prompt1" name="prompt" id="prompt1Mark" />
+		<label class="left button card" for="prompt1Mark" id="Prompt1"></label>
+		<input class="center mark" type="radio" value="Prompt1" name="prompt" id="prompt2Mark" />
+		<label class="center button card" for="prompt2Mark" id="Prompt2"></label>
+		<input class="right mark" type="radio" value="Prompt1" name="prompt" id="prompt3Mark" />
+		<label class="right button card" for="prompt3Mark" id="Prompt3"></label>
+	</form>
+	<form id="submitPrompt" method="POST" action='#'>
+		<button class="center button" name="nextPhaseButton" value="submittedPrompts" type="submit">Submit</button>
+	</form>
+</body>
 	
 </html>

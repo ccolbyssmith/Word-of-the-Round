@@ -13,15 +13,19 @@
     <h1>Creating Answer</h1>
     <form id="enterAnswer" method="POST" action='#'>
         <p align="left">
-            Here's your prompt: [insert prompt chosen by the judge]
+            <div id="Prompt"></div>
             <br>
-            Here's your random word: [insert randomly generated word]
+            <div id="Word"></div>
             <br> <br> <br> <br>
-            <textarea rows="8" cols="80" name="description"> 
-			Using the random word, enter your response here... </textarea>
+            <textarea rows="8" cols="80" id="answer">Using the random word, enter your response here... </textarea>
             <br> <br> <br> <br>
-            Ready to submit? <button class="button" name="yesbuttonplayerresponse" value="Yes!">Yes!</button>
+            Ready to submit? <button class="button" name="yesButtonplayerResponse" value="Yes!" type="submit">Yes!</button>
         </p>
+    </form>
+    <div class="top-left" id="playerName"></div>
+    <div class="bottom-right" id="playerScores"></div>
+    <form id="leave" method="POST" action='#' class="bottom-left">
+        <input type="submit" value="Leave Room">
     </form>
 </body>
 </html>
