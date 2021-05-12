@@ -51,10 +51,7 @@ def loadInfo(identification):
 @socketio.event
 def loadPlayerScores(identification):
     playerList = dataHelper.loadPlayerList(identification['lobbyName'])
-    playerNames = []
-    for player in playerList:
-        playerNames.append(player['playerName'])
-    emit('displayPlayerScores', playerNames)
+    emit('displayPlayerScores', playerList)
 
 @socketio.event
 def submitPrompt(info):

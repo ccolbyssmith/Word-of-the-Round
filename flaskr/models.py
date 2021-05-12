@@ -40,6 +40,7 @@ class DataManipulator:
 		playerList = json.loads(data[lobbyName]['players'])
 		for player in playerList:
 			playerLocation = self.findPlayerLocation(player['playerID'])[1]
+			playerList[playerLocation]['score'] = 0
 			if player['host'] == True:
 				playerList[playerLocation]['judge'] = True
 			else:

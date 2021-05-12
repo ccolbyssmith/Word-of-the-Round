@@ -43,15 +43,15 @@ $(document).ready(function() {
         for (i = 0; i < players.length; i++) {
             if (document.getElementById("playerScores").children[i*2 + 1] == null) {
                 var player = document.createElement("player" + i.toString());
-                player.id = players[i]
-                var text = document.createTextNode(players[i] + ": 0");
+                player.id = players[i]['playerID']
+                var text = document.createTextNode(players[i]['playerName'] + ": " + players[i]['score']);
                 player.appendChild(text);
                 var playerScores = document.getElementById("playerScores");
                 linebreak = document.createElement("br");
                 playerScores.appendChild(linebreak);
                 playerScores.appendChild(player);
             } else {
-                var player = document.getElementById(players[i]);
+                var player = document.getElementById(players[i]['playerID']);
                 player.innerHTML = players[i] + ": 0"
             }
         }
