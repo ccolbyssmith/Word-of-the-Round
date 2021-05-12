@@ -43,7 +43,7 @@ $(document).ready(function() {
         for (i = 0; i < players.length; i++) {
             if (document.getElementById("playerScores").children[i*2 + 1] == null) {
                 var player = document.createElement("player" + i.toString());
-                player.id = players[i]['playerID']
+                player.id = players[i]['playerID'];
                 var text = document.createTextNode(players[i]['playerName'] + ": " + players[i]['score']);
                 player.appendChild(text);
                 var playerScores = document.getElementById("playerScores");
@@ -52,7 +52,7 @@ $(document).ready(function() {
                 playerScores.appendChild(player);
             } else {
                 var player = document.getElementById(players[i]['playerID']);
-                player.innerHTML = players[i] + ": 0"
+                player.innerHTML = players[i] + ": " + players[i]['score'];
             }
         }
     });
