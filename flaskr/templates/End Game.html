@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>End of Game!</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+</head>
+	
+   <body>
+      <form action="{{ url_for('home.readCreateGameButton') }}" method="post">
+		  <p align = "left">
+		Here are the scores:
+		<br><br><br><br>
+
+		Would you like to play again? <button class="button" name="yesbuttonnewgame" value="Yes!">Yes!</button>
+      </form>
+   </body>
+	
+</html>

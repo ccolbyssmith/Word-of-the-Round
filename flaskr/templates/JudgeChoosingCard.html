@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Judge, Choose Your Card!</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
+</head>
+	
+   <body>
+      <form action="{{ url_for('home.readCreateGameButton') }}" method="post">
+		  <p align = "left">
+		Here are reminders of the prompt and word you chose:
+		<br>
+		Prompt: [insert prompt]
+		<br>
+		Word: [insert word]
+		<br><br><br><br>
+		Now, please select the best player response:
+		<button class="button" name="playerresponse1" value="[whatever player 1 wrote]">whateverplayer1wrote</button>
+		  </p>
+
+		Are you ready to submit? <button class="button" name="yesbuttonjudgechoosingcard" value="Yes!">Yes!</button>
+      </form>
+   </body>
+	
+</html>
