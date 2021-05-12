@@ -10,6 +10,18 @@
     <script src="{{url_for('static', filename='js/phase2Script.js')}}"></script>
 </head>
 <body>
-        <h1>Choosing Answers</h1>
+    <h1>Choosing Answers</h1>
+    <form id="enterAnswer" method="POST" action='#'>
+        <p align="left">
+            Here's your prompt: [insert prompt chosen by the judge]
+            <br>
+            Here's your random word: [insert randomly generated word]
+            <br> <br> <br> <br>
+            <textarea rows="8" cols="80" name="description"> 
+			Using the random word, enter your response here... </textarea>
+            <br> <br> <br> <br>
+            Ready to submit? <button class="button" name="yesbuttonplayerresponse" value="Yes!">Yes!</button>
+        </p>
+    </form>
 </body>
 </html>
