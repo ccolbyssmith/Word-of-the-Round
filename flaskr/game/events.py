@@ -42,12 +42,6 @@ def loadPrompts(info):
     emit('displayPrompts', prompts)
 
 @socketio.event
-def drawWords(info):
-    words = WordHandler.return3Cards()
-    wordDict = {'word1': words[0], 'word2': words[1], 'word3': words[2]}
-    emit('displayWords', wordDict, to=info['lobbyName'])
-
-@socketio.event
 def loadInfo(identification):
     settings = dataHelper.returnSettings(identification['lobbyName'])
     judgeId = dataHelper.getJudge(identification['lobbyName'])
