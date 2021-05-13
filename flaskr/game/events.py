@@ -22,7 +22,6 @@ answerHandler = AnswerHandler()
 @socketio.event
 def rejoin_lobby(lobbyName):
     join_room(lobbyName)
-    session['receive_count'] = session.get('receive_count', 0) + 1
 
 @socketio.event
 def drawPrompts(info):
@@ -32,16 +31,19 @@ def drawPrompts(info):
 
 @socketio.event
 def loadPrompts(info):
-    currentPrompts = promptHandler.getCurrentCards(info['lobbyName'])
-    prompts = {}
-    prompts['prompt1'] = currentPrompts['card1']
-    prompts['prompt2'] = currentPrompts['card2']
-    prompts['prompt3'] = currentPrompts['card3']
-    currentWords = wordHandler.getCurrentCards(info['lobbyName'])
-    prompts['word1'] = currentWords['card1']
-    prompts['word2'] = currentWords['card2']
-    prompts['word3'] = currentWords['card3']
-    emit('displayPrompts', prompts)
+    try:
+        currentPrompts = promptHandler.getCurrentCards(info['lobbyName'])
+        prompts = {}
+        prompts['prompt1'] = currentPrompts['card1']
+        prompts['prompt2'] = currentPrompts['card2']
+        prompts['prompt3'] = currentPrompts['card3']
+        currentWords = wordHandler.getCurrentCards(info['lobbyName'])
+        prompts['word1'] = currentWords['card1']
+        prompts['word2'] = currentWords['card2']
+        prompts['word3'] = currentWords['card3']
+        emit('displayPrompts', prompts)
+    except:
+        pass
 
 @socketio.event
 def loadInfo(identification):

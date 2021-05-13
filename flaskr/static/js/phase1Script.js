@@ -16,6 +16,7 @@ $(document).ready(function() {
     });
 
     socket.on('displayPrompts', function(prompts) {
+        sessionStorage.setItem('gotPrompts', 'true');
         document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
         document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
         document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
@@ -53,9 +54,8 @@ $(document).ready(function() {
             sessionStorage.setItem('gotPrompts', true);
             sessionStorage.setItem('isJudge', true);
             socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
-        } else if (sessionStorage.getItem('gotPrompts') == 'true') {
-             socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         }
+        socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         if (sessionStorage.getItem('playerId') != info['judgeId']) {
             sessionStorage.setItem('isJudge', false);
         }
