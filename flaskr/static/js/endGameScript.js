@@ -57,5 +57,11 @@ $(document).ready(function() {
         return false;
     });
 
+    socket.on('newHost', function(host) {
+        if (host == sessionStorage.getItem('playerId')) {
+            sessionStorage.setItem('isHost', true);
+        }
+    });
+
     document.getElementById('playerName').innerHTML = sessionStorage.getItem('playerName')
 });

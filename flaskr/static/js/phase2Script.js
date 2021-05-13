@@ -8,6 +8,7 @@ $(document).ready(function() {
         document.getElementById("error").style.display = 'none'
         socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
+        socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('loadChosenPrompt', sessionStorage.getItem('lobbyName'));
         if (sessionStorage.getItem('isJudge') == 'true' || sessionStorage.getItem('submittedAnswer') == 'true') {
             document.getElementById("enterAnswer").style.display = 'none';
@@ -38,6 +39,10 @@ $(document).ready(function() {
                 player.innerHTML = players[i] + ": " + players[i]['score'];
             }
         }
+    });
+
+    socket.on('getInfo', function(info) {
+        document.getElementById('win_data').innerHTML = 'Required Score to Win: ' + info['win_data']
     });
 
     socket.on('redirect', function(destination) {

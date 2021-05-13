@@ -106,6 +106,13 @@ h1 {
     left: 2%;
 }
 
+.top-right {
+    font-size: 35px;
+    position: fixed;
+    top: 2%;
+    right: 2%;
+}
+
 .large-br {
     display: block;
     margin-bottom: 9em;

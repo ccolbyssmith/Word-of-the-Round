@@ -71,6 +71,7 @@ $(document).ready(function() {
             document.getElementById('word3Mark').disabled = true;
             document.getElementById('submitPrompt').style.display = 'none';
         }
+        document.getElementById('win_data').innerHTML = 'Required Score to Win: ' + info['win_data']
     });
 
     $('form#leave').submit(function(event) {

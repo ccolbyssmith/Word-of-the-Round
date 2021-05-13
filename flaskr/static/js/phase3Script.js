@@ -8,6 +8,7 @@ $(document).ready(function() {
         socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('loadChosenPrompt', sessionStorage.getItem('lobbyName'));
+        socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
         if (sessionStorage.getItem('isJudge') != 'true') {
             document.getElementById('answerMark1').disabled = true;
             document.getElementById('answerMark2').disabled = true;
@@ -23,6 +24,10 @@ $(document).ready(function() {
     socket.on('displayChosenPrompt', function(info) {
         document.getElementById("Prompt").innerHTML = 'Prompt: ' + info['prompt'];
         document.getElementById("Word").innerHTML= 'Word: ' + info['word'];
+    });
+
+    socket.on('getInfo', function(info) {
+        document.getElementById('win_data').innerHTML = 'Required Score to Win: ' + info['win_data']
     });
 
     socket.on('displayAnswers', function(answers) {
