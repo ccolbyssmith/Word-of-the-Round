@@ -8,7 +8,6 @@ $(document).ready(function() {
     // The callback function is invoked when a connection with the
     // server is established.
     socket.on('connect', function() {
-        console.log(sessionStorage.getItem('playerId'));
         socket.emit('join_lobby', {playerId: sessionStorage.getItem('playerId')});
     });
 
@@ -16,11 +15,9 @@ $(document).ready(function() {
     // The callback function is invoked whenever the server emits data
     // to the client. The data is then displayed in the "Received"
     // section of the page.
-    socket.on('server_response', function(msg, cb) {
+    socket.on('server_response', function(msg) {
         socket.emit('loadPlayerList', {lobbyName: sessionStorage.getItem('lobbyName')});
         $('#log').append('<br>' + $('<div/>').text('Event: ' + msg.data).html());
-        if (cb)
-            cb();
     });
 
     socket.on('failedToStart', function() {
@@ -44,11 +41,8 @@ $(document).ready(function() {
 		document.getElementById('player_list').innerHTML = "Players: " + playerString;
     });
 
-    socket.on('my_response', function(msg, cb) {
-        console.log(msg.user);
+    socket.on('my_response', function(msg) {
         $('#log').append('<br>' + $('<div/>').text(msg.user + ': ' + msg.data).html());
-        if (cb)
-            cb();
     });
 
     socket.on('createJudge', function(judgeId) {
@@ -62,32 +56,8 @@ $(document).ready(function() {
 
     //used for redircting user to new url
     socket.on('redirect', function(destination) {
-        console.log('works')
         window.location.href = destination;
         socket.emit('disconnect_request');
-    });
-
-    // Interval function that tests message latency by sending a "ping"
-    // message. The server then responds with a "pong" message and the
-    // round trip time is measured.
-    var ping_pong_times = [];
-    var start_time;
-    window.setInterval(function() {
-        start_time = (new Date).getTime();
-        socket.emit('my_ping');
-    }, 1000);
-
-    // Handler for the "pong" message. When the pong is received, the
-    // time from the ping is stored, and the average of the last 30
-    // samples is average and displayed.
-    socket.on('my_pong', function() {
-        var latency = (new Date).getTime() - start_time;
-        ping_pong_times.push(latency);
-        ping_pong_times = ping_pong_times.slice(-30); // keep last 30 samples
-        var sum = 0;
-        for (var i = 0; i < ping_pong_times.length; i++)
-            sum += ping_pong_times[i];
-        $('#ping-pong').text(Math.round(10 * sum / ping_pong_times.length) / 10);
     });
 
     // Handlers for the different forms in the page.
@@ -106,7 +76,6 @@ $(document).ready(function() {
         return false;
     });
     $('form#start').submit(function(event) {
-        console.log(document.getElementById('Time Limit').value);
         socket.emit('start_game', {time_limit:  document.getElementById('Time Limit').value,
             word_difficulty: document.getElementById('Word Difficulty').value, 
             word_limit: document.getElementById('Word Count Limit').value,
@@ -125,7 +94,6 @@ $(document).ready(function() {
 
     var gameCode = sessionStorage.getItem('lobbyName');
     document.getElementById('game_code').innerHTML = "Game Code: " + gameCode;
-    console.log(sessionStorage.getItem('isHost'));
     if (sessionStorage.getItem('isHost') == "false") {
         document.getElementById('start').style.display = "none";
     }

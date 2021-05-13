@@ -61,7 +61,6 @@ class DataManipulator:
 		self.writeData(data)
 
 	def findPlayerLocation(self, soughtPlayerID):
-		print(soughtPlayerID)
 		data = self.loadData()
 		for lobby in json.loads(data['lobbies']):
 			count = 0
@@ -116,7 +115,6 @@ class DataManipulator:
 		if playerList[playerPosition]['host'] == True:
 			if len(playerList) > 1:
 				playerList[playerPosition + 1]['host'] = True
-		print(playerPosition)
 		playerList.pop(playerPosition)
 		data[lobbyName]['players'] = json.dumps(playerList)
 		self.writeData(data)
@@ -143,7 +141,6 @@ class DataManipulator:
 		return playerList[playerPosition]['judge']
 
 	def newJudge(self, lobbyName):
-		print('gettingNewJudge')
 		data = self.loadData()
 		playerList = self.loadPlayerList(lobbyName)
 		for player in playerList:

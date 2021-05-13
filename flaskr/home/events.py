@@ -49,24 +49,18 @@ def joiningLobby(info):
 #the event invoked to join a lobby
 @socketio.event
 def join_lobby(message):
-    print('Client Joined Room')
     playerID = message['playerId']
     lobbyName = dataHelper.findPlayerLocation(playerID)[0]
     join_room(lobbyName)
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
-         {'data': dataHelper.returnPlayerName(playerID) + ' HAS JOINED THE ROOM', 
-         'count': session['receive_count']}, to=lobbyName)
+         {'data': dataHelper.returnPlayerName(playerID) + ' HAS JOINED THE ROOM'}, to=lobbyName)
 
 #the event invoked to leave a lobby
 @socketio.event
 def leave(message):
-    print('Client Left Room')
-    print(message['lobbyName'])
-    session['receive_count'] = session.get('receive_count', 0) + 1
     emit('server_response',
-         {'data': dataHelper.returnPlayerName(message['user']) + ' HAS LEFT THE ROOM', 
-         'count': session['receive_count']}, to=message['lobbyName'])
+         {'data': dataHelper.returnPlayerName(message['user']) + ' HAS LEFT THE ROOM'}, to=message['lobbyName'])
     leave_room(dataHelper.findPlayerLocation(message['user'])[0])
     destination = url_for('home.displayHomePage')
     dataHelper.deletePlayer(message['user'])
@@ -80,17 +74,15 @@ def leave(message):
 #the event invoked to send a message in a lobby
 @socketio.event
 def my_room_event(message):
-    print('message sent')
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my_response',
-         {'data': message['data'], 'count': session['receive_count'], 
+         {'data': message['data'], 
          'user': dataHelper.returnPlayerName(message['user'])},
          to=dataHelper.findPlayerLocation(message['user'])[0])
 
 @socketio.event
 def start_game(settings):
     if dataHelper.returnPlayerCount(settings['lobbyName']) >= 3:
-        print('Started Game')
         dataHelper.startGame(settings['lobbyName'], settings)
         judge = dataHelper.getJudge(settings['lobbyName'])
         emit('createJudge', judge, to=settings['lobbyName'])
@@ -127,13 +119,8 @@ def disconnect_request():
     # when the callback function is invoked we know that the message has been
     # received and it is safe to disconnect
     emit('server_response',
-         {'data': 'Disconnected!', 'count': session['receive_count']},
+         {'data': 'Disconnected!'},
          callback=can_disconnect)
-
-#sends the user's ping
-@socketio.event
-def my_ping():
-    emit('my_pong')
 
 #initaties the connection between the user and the server
 @socketio.event
@@ -143,8 +130,3 @@ def connect():
         if thread is None:
             thread = socketio.start_background_task(background_thread)
     emit('server_response', {'data': 'Connected', 'count': 0})
-
-#this is coupled with the disconnect event
-@socketio.on('disconnect')
-def test_disconnect():
-    print('Client disconnected', request.sid)

@@ -31,7 +31,6 @@ $(document).ready(function() {
     });
 
     socket.on('displayAnswers', function(answers) {
-        console.log(answers);
         for (var i = 1; i <= answers.length; i++) {
             document.getElementById('answerNumber' + i).innerHTML = answers[i - 1];
         }
@@ -61,7 +60,6 @@ $(document).ready(function() {
     });
 
     socket.on('redirect', function(destination) {
-        console.log('works');
         window.location.href = destination;
         socket.emit('disconnect_request');
     });
@@ -81,7 +79,6 @@ $(document).ready(function() {
         } else if (document.getElementById('answerMark6').checked) {
             answerButtonId = document.getElementById('answerMark6').value;
         }
-        console.log(answerButtonId);
         if(answerButtonId != null) {
             socket.emit('choseAnswer', {lobbyName: sessionStorage.getItem('lobbyName'), 
                 answer: document.getElementById(answerButtonId).innerHTML});

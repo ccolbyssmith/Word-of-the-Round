@@ -32,7 +32,6 @@ $(document).ready(function() {
     });
 
     socket.on('redirect', function(destination) {
-        console.log('works');
         window.location.href = destination;
         socket.emit('disconnect_request');
     });

@@ -51,7 +51,6 @@ class CardHandler:
 	def getCurrentCards(self, lobby):
 		with open(self.currentCardLocation, 'r') as read_file:
 			currentCards = json.load(read_file)
-			print(currentCards[lobby])
 			return currentCards[lobby]
 
 	def saveChosenCard(self, card, lobby):

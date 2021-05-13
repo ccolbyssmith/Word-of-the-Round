@@ -21,7 +21,6 @@ answerHandler = AnswerHandler()
 
 @socketio.event
 def rejoin_lobby(lobbyName):
-    print('Client Rejoined Room')
     join_room(lobbyName)
     session['receive_count'] = session.get('receive_count', 0) + 1
 
@@ -58,7 +57,6 @@ def loadPlayerScores(identification):
 
 @socketio.event
 def submitPrompt(info):
-    print('phase 2')
     promptHandler.saveChosenCard(info['prompt'], info['lobbyName'])
     wordHandler.saveChosenCard(info['word'], info['lobbyName'])
     destination = url_for('game.displayPhase2')
@@ -72,10 +70,7 @@ def loadChosenPrompt(lobbyName):
 
 @socketio.event
 def logAnswer(info):
-    print('phase 3')
     answerHandler.saveAnswer(info['answer'], info['playerId'], info['lobbyName'])
-    print(len(answerHandler.getAnswers(info['lobbyName'])))
-    print(dataHelper.returnPlayerCount(info['lobbyName']))
     if len(answerHandler.getAnswers(info['lobbyName'])) == dataHelper.returnPlayerCount(info['lobbyName']) - 1:
         destination = url_for('game.displayPhase3')
         emit('redirect', destination, to=info['lobbyName'])
@@ -127,7 +122,6 @@ def returnToMenu(lobbyName):
         
 @socketio.event
 def leaveGame(info):
-    print('Client Left Room')
     session['receive_count'] = session.get('receive_count', 0) + 1
     leave_room(info['lobbyName'])
     if dataHelper.returnPlayerCount(info['lobbyName']) != 3:

@@ -6,19 +6,16 @@ $(document).ready(function() {
 
     socket.on('connect', function() {
         socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
-        console.log(sessionStorage.getItem('gotPrompts'))
         socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
     socket.on('drewPrompts', function() {
-        console.log('drewPrompts')
         sessionStorage.setItem('gotPrompts', 'true');
         socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
     socket.on('displayPrompts', function(prompts) {
-        console.log(prompts)
         document.getElementById('Prompt1').innerHTML = prompts['prompt1'];
         document.getElementById('Prompt2').innerHTML = prompts['prompt2'];
         document.getElementById('Prompt3').innerHTML = prompts['prompt3'];
@@ -97,8 +94,6 @@ $(document).ready(function() {
         } else if (document.getElementById('word3Mark').checked) {
             wordButtonId = document.getElementById('word3Mark').value;
         }
-        console.log(promptButtonId);
-        console.log(wordButtonId);
         if(promptButtonId != null && wordButtonId != null) {
             socket.emit('submitPrompt', {lobbyName: sessionStorage.getItem('lobbyName'), 
                 prompt: document.getElementById(promptButtonId).innerHTML, 
@@ -109,7 +104,6 @@ $(document).ready(function() {
 
     socket.on('redirect', function(destination) {
         sessionStorage.setItem('gotPrompts', false);
-        console.log('works');
         window.location.href = destination;
         socket.emit('disconnect_request');
     });

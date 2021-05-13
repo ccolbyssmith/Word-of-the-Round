@@ -42,5 +42,4 @@ def displayLoginPage():
 #displays the joinee login page
 @home.route('/joineeLoginPage')
 def displayHostLoginPage():
-    print(session['joinError'])
     return render_template('Joinee Login Page.html')
