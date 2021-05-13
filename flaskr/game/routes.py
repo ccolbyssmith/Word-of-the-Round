@@ -19,3 +19,11 @@ def displayPhase1():
 @game.route('/Phase2')
 def displayPhase2():
     return render_template('Game Part2.html');
+
+@game.route('/Phase3')
+def displayPhase3():
+    return render_template('JudgeChoosingCard.html');
+
+@game.route('/endGame')
+def displayEndGame():
+    return render_template('End Game.html');

@@ -11,17 +11,19 @@
 </head>
 <body>
     <h1>Creating Answer</h1>
+    <div class="smallFont" id="Prompt"></div>
+    <br>
+    <div class="smallFont" id="Word"></div>
+    <br> <br> <br> <br>
     <form id="enterAnswer" method="POST" action='#'>
         <p align="left">
-            <div id="Prompt"></div>
-            <br>
-            <div id="Word"></div>
-            <br> <br> <br> <br>
             <textarea rows="8" cols="80" id="answer">Using the random word, enter your response here... </textarea>
             <br> <br> <br> <br>
             Ready to submit? <button class="button" name="yesButtonplayerResponse" value="Yes!" type="submit">Yes!</button>
         </p>
     </form>
+    <br> <br> <br> <br>
+    <div class="center largeFont" id="Waiting">Waiting for Everyone to Submit Their Answers</div>
     <div class="top-left" id="playerName"></div>
     <div class="bottom-right" id="playerScores"></div>
     <form id="leave" method="POST" action='#' class="bottom-left">

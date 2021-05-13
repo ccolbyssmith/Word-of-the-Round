@@ -4,17 +4,20 @@ from flask import Flask, render_template, session, request, redirect, url_for, \
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
 import json
+import random
 
 from .. import socketio
 from . import game
 from ..models import DataManipulator
 from ..game.gameplay import CardHandler
+from ..game.gameplay import AnswerHandler
 thread = None
 thread_lock = Lock()
 
 dataHelper = DataManipulator()
 promptHandler = CardHandler("prompts")
 wordHandler = CardHandler("words")
+answerHandler = AnswerHandler()
 
 @socketio.event
 def rejoin_lobby(lobbyName):
@@ -60,6 +63,51 @@ def submitPrompt(info):
     wordHandler.saveChosenCard(info['word'], info['lobbyName'])
     destination = url_for('game.displayPhase2')
     emit('redirect', destination, to=info['lobbyName'])
+
+@socketio.event
+def loadChosenPrompt(lobbyName):
+    chosenPrompt = promptHandler.getChosenCard(lobbyName)
+    chosenWord = wordHandler.getChosenCard(lobbyName)
+    emit('displayChosenPrompt', {'prompt': chosenPrompt, 'word': chosenWord})
+
+@socketio.event
+def logAnswer(info):
+    print('phase 3')
+    answerHandler.saveAnswer(info['answer'], info['playerId'], info['lobbyName'])
+    print(len(answerHandler.getAnswers(info['lobbyName'])))
+    print(dataHelper.returnPlayerCount(info['lobbyName']))
+    if len(answerHandler.getAnswers(info['lobbyName'])) == dataHelper.returnPlayerCount(info['lobbyName']) - 1:
+        destination = url_for('game.displayPhase3')
+        emit('redirect', destination, to=info['lobbyName'])
+
+@socketio.event
+def loadAnswers(lobbyName):
+    answers = answerHandler.getAnswers(lobbyName)
+    answerList = list(answers.values())
+    for i in range(0, len(answerList)):
+        rand = random.randint(0, len(answerList) - 1)
+        temp = answerList[i]
+        answerList[i] = answerList[rand]
+        answerList[rand] = temp
+    emit('displayAnswers', answerList)
+
+@socketio.event
+def choseAnswer(info):
+    winnerOfRoundId = answerHandler.getWinner(info['answer'], info['lobbyName'])
+    dataHelper.playerWins(winnerOfRoundId)
+    winningPlayer = dataHelper.returnWinningPlayer(info['lobbyName'])
+    playerList = dataHelper.loadPlayerList(info['lobbyName'])
+    promptHandler.finishRound(info['lobbyName'])
+    wordHandler.finishRound(info['lobbyName'])
+    answerHandler.finishRound(info['lobbyName'])
+    if winningPlayer['score'] == 3:
+        destination = url_for('game.displayEndGame')
+        emit('redirect', destination, to=info['lobbyName'])
+    else:
+        dataHelper.newJudge(info['lobbyName'])
+        destination = url_for('game.displayPhase1')
+        emit('redirect', destination, to=info['lobbyName'])
+        
 
 @socketio.event
 def leaveGame(info):

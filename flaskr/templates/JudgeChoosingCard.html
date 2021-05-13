@@ -2,38 +2,48 @@
 <html>
 
 <head>
-	<title>Judge, Choose Your Card!</title>
+	<meta charset="utf-8">
+	<title>Word of the Round</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+	<script src="{{url_for('static', filename='js/phase3Script.js')}}"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/homeStyle.css') }}">
 </head>
 	
 <body>
+	<h1>Choosing Answer</h1>
+	<span class="medium-br"></span>
 	<p align="left">
-		Here are reminders of the prompt and word you chose:
+		<div class="smallFont" id="Prompt"></div>
 		<br>
-		Prompt: [insert prompt]
-		<br>
-		Word: [insert word]
+		<div class="smallFont" id="Word"></div>
 		<br><br><br><br>
 		Now, please select the best player response:
 	</p>
 	<form id="chooseWord" method="POST" action='#'>
-		<input class="left mark" type="radio" value="Answer1" name="answer" id="wordnumber1" />
-		<label class="left button card" for="wordnumber1" id="Wordnumber1"></label>
-		<input class="center mark" type="radio" value="Answer2" name="answer" id="wordnumber2" />
-		<label class="center button card" for="wordnumber2" id="Wordnumber2"></label>
-		<input class="right mark" type="radio" value="Answer3" name="answer" id="wordnumber3" />
-		<label class="right button card" for="wordnumber3" id="Wordnumber3"></label>
+		<input class="left mark" type="radio" value="answerNumber1" name="answer" id="answerMark1" />
+		<label class="left button card smallFont" for="answerMark1" id="answerNumber1"></label>
+		<input class="center mark" type="radio" value="answerNumber2" name="answer" id="answerMark2" />
+		<label class="center button card smallFont" for="answerMark2" id="answerNumber2"></label>
+		<input class="right mark" type="radio" value="answerNumber3" name="answer" id="answerMark3" />
+		<label class="right button card smallFont" for="answerMark3" id="answerNumber3"></label>
 		<br>
 		<span class="medium-br"></span>
-		<input class="left mark" type="radio" value="Prompt1" name="answer" id="promptnumber1" />
-		<label class="left button card" for="promptnumber1" id="Promptnumber1"></label>
-		<input class="center mark" type="radio" value="Prompt1" name="answer" id="promptnumber2" />
-		<label class="center button card" for="promptnumber2" id="Promptnumber2"></label>
-		<input class="right mark" type="radio" value="Prompt1" name="answer" id="promptnumber3" />
-		<label class="right button card" for="promptnumber3" id="Promptnumber3"></label>
+		<input class="left mark" type="radio" value="answerNumber4" name="answer" id="answerMark4" />
+		<label class="left button card smallFont" for="answerMark4" id="answerNumber4"></label>
+		<input class="center mark" type="radio" value="answerNumber5" name="answer" id="answerMark5" />
+		<label class="center button card smallFont" for="answerMark5" id="answerNumber5"></label>
+		<input class="right mark" type="radio" value="answerNumber6" name="answer" id="answerMark6" />
+		<label class="right button card smallFont" for="answerMark6" id="answerNumber6"></label>
 	</form>
-	<form id="submitPrompt" method="POST" action='#'>
+	<span class="medium-br"></span>
+	<form id="chooseAnswer" method="POST" action='#'>
 		<button class="center button" name="nextPhaseButton" value="submittedPrompts" type="submit">Submit</button>
+	</form>
+	<div class="top-left" id="playerName"></div>
+	<div class="bottom-right" id="playerScores"></div>
+	<form id="leave" method="POST" action='#' class="bottom-left">
+		<input type="submit" value="Leave Room">
 	</form>
 </body>
 	

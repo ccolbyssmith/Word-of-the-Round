@@ -108,3 +108,54 @@ class CardHandler:
 			if card['used'] == False:
 				count += 1
 		return count
+
+	def finishRound(self, lobby):
+		chosenCards = {}
+		with open(self.chosenCardLocation, 'r') as read_file:
+			chosenCards = json.load(read_file)
+		chosenCards.pop(lobby)
+		with open(self.chosenCardLocation, 'w') as write_file:
+			json.dump(chosenCards, write_file)
+
+		currentCards = {}
+		with open(self.currentCardLocation, 'r') as read_file:
+			currentCards = json.load(read_file)
+		currentCards.pop(lobby)
+		with open(self.currentCardLocation, 'w') as write_file:
+			json.dump(currentCards, write_file)
+
+class AnswerHandler:
+	def __init__(self):
+		self.fileLocation = 'flaskr/data/answers.json'
+
+	def saveAnswer(self, newAnswer, playerId, lobby):
+		answers = {}
+		with open(self.fileLocation, 'r') as read_file:
+			answers = json.load(read_file)
+		if lobby in answers:
+			answers[lobby][playerId] = newAnswer
+		else:
+			answers[lobby] = {}
+			answers[lobby][playerId] = newAnswer
+		with open(self.fileLocation, 'w') as write_file:
+			json.dump(answers, write_file)
+
+	def getAnswers(self, lobby):
+		answers = {}
+		with open(self.fileLocation, 'r') as read_file:
+			return json.load(read_file)[lobby]
+
+	def getWinner(self, chosenAnswer, lobby):
+		answers = self.getAnswers(lobby)
+		key_list = list(answers.keys())
+		val_list = list(answers.values())
+		position = val_list.index(chosenAnswer)
+		return key_list[position]
+
+	def finishRound(self, lobby):
+		answers = {}
+		with open(self.fileLocation, 'r') as read_file:
+			answers = json.load(read_file)
+		answers.pop(lobby)
+		with open(self.fileLocation, 'w') as write_file:
+			json.dump(answers, write_file)

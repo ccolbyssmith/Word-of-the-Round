@@ -34,7 +34,7 @@ def hostLobby(info):
 
 @socketio.event
 def joiningLobby(info):
-    if dataHelper.lobbyExists(info['lobbyName']) and dataHelper.gameStarted(info['lobbyName']) == False:
+    if dataHelper.lobbyExists(info['lobbyName']) and dataHelper.gameStarted(info['lobbyName']) == False and dataHelper.returnPlayerCount(info['lobbyName']) != 7:
         myPlayerID = str(uuid.uuid4())
         myPlayerName = info['playerName']
         myLobbyName = info['lobbyName']
@@ -73,7 +73,7 @@ def leave(message):
     if dataHelper.returnPlayerCount(message['lobbyName']) == 0:
         dataHelper.deleteLobby(message['lobbyName'])
     else:
-        host = dataHelper.getHost(info['lobbyName'])
+        host = dataHelper.getHost(message['lobbyName'])
         emit("newHost", host, to=message['lobbyName'])
     emit('redirect', destination)
 
@@ -89,18 +89,23 @@ def my_room_event(message):
 
 @socketio.event
 def start_game(settings):
-    print('Started Game')
-    dataHelper.startGame(settings['lobbyName'], settings)
+    if dataHelper.returnPlayerCount(settings['lobbyName']) >= 3:
+        print('Started Game')
+        dataHelper.startGame(settings['lobbyName'], settings)
+        judge = dataHelper.getJudge(settings['lobbyName'])
+        emit('createJudge', judge, to=settings['lobbyName'])
+    else:
+        emit('failedToStart')
+
+@socketio.event
+def gogogo(lobbyName):
     destination = url_for('game.displayPhase1')
-    emit('redirect', destination, to=settings['lobbyName'])
+    emit('redirect', destination, to=lobbyName)
 
 @socketio.event
 def loadNewHost(identification):
-    playerList = dataHelper.loadPlayerList(identification['lobbyName'])
-    playerNames = []
-    for player in playerList:
-        playerNames.append(player['playerName'])
-    emit('displayPlayerList', playerNames, to=identification['lobbyName'])
+    host = dataHelper.getHost(identification['lobbyName'])
+    emit('newHost', host, to=identification['lobbyName'])
 
 @socketio.event
 def loadPlayerList(identification):

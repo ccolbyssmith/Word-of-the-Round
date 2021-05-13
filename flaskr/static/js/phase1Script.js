@@ -6,7 +6,8 @@ $(document).ready(function() {
 
     socket.on('connect', function() {
         socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
-        if (sessionStorage.getItem('isHost') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
+        console.log(sessionStorage.getItem('gotPrompts'))
+        if (sessionStorage.getItem('isJudge') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
             sessionStorage.setItem('gotPrompts', true);
             socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
         } else if (sessionStorage.getItem('gotPrompts') == 'true') {
@@ -17,16 +18,15 @@ $(document).ready(function() {
     });
 
     socket.on('drewPrompts', function() {
+        console.log('drewPrompts')
         sessionStorage.setItem('gotPrompts', 'true');
         socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
-    socket.on('redirect', function(destination, cb) {
+    socket.on('redirect', function(destination) {
         console.log('works');
         window.location.href = destination;
         socket.emit('disconnect_request');
-        if (cb)
-            cb();
     });
 
     socket.on('displayPrompts', function(prompts) {

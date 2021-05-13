@@ -122,6 +122,39 @@ class DataManipulator:
 			if player['judge'] == True:
 				return player['playerID']
 
+	def newJudge(self, lobbyName):
+		data = self.loadData()
+		playerList = self.loadPlayerList(lobbyName)
+		for player in playerList:
+			if player['judge'] == True:
+				playerLocation = self.findPlayerLocation(player['playerID'])[1]
+				playerList[playerLocation]['judge'] = False
+				if playerLocation + 1 < len(playerList):
+					playerList[playerLocation + 1]['judge'] = True
+				else:
+					playerList[0]['judge'] = True
+		data[lobbyName]['players'] = json.dumps(playerList)
+		self.writeData(data)
+
+
+	def playerWins(self, playerId):
+		data = self.loadData()
+		playerLocation = self.findPlayerLocation(playerId)
+		playerList = self.loadPlayerList(playerLocation[0])
+		playerList[playerLocation[1]]['score'] += 1
+		data[playerLocation[0]]['players'] = json.dumps(playerList)
+		self.writeData(data)
+
+	def returnWinningPlayer(self, lobby):
+		playerList = self.loadPlayerList(lobby)
+		highscore = 0
+		winningPlayer = {}
+		for player in playerList:
+			if player['score'] > highscore:
+				highscore = player['score']
+				winningPlayer = player
+		return winningPlayer
+
 	def returnSettings(self, lobbyName):
 		return self.loadData()[lobbyName]['settings']
 
@@ -151,4 +184,6 @@ class DataManipulator:
 		with open('flaskr/data/chosenPrompts.json', 'w') as write_file:
 			json.dump({}, write_file)
 		with open('flaskr/data/chosenWords.json', 'w') as write_file:
+			json.dump({}, write_file)
+		with open('flaskr/data/answers.json', 'w') as write_file:
 			json.dump({}, write_file)

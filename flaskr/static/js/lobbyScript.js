@@ -23,6 +23,10 @@ $(document).ready(function() {
             cb();
     });
 
+    socket.on('failedToStart', function() {
+        document.getElementById('error').innerHTML = 'Not Enough Players To Start the Game'
+    });
+
     socket.on('newHost', function(host) {
         if (host == sessionStorage.getItem('playerId')) {
             sessionStorage.setItem('isHost', true);
@@ -47,14 +51,20 @@ $(document).ready(function() {
             cb();
     });
 
+    socket.on('createJudge', function(judgeId) {
+        if (sessionStorage.getItem('playerId') == judgeId) {
+            sessionStorage.setItem('isJudge', true)
+        } else {
+            sessionStorage.setItem('isJudge', false)
+        }
+        socket.emit('gogogo', sessionStorage.getItem('lobbyName'));
+    });
 
     //used for redircting user to new url
-    socket.on('redirect', function(destination, cb) {
+    socket.on('redirect', function(destination) {
         console.log('works')
         window.location.href = destination;
         socket.emit('disconnect_request');
-        if (cb)
-            cb();
     });
 
     // Interval function that tests message latency by sending a "ping"
@@ -84,8 +94,10 @@ $(document).ready(function() {
     // These accept data from the user and send it to the server in a
     // variety of ways
     $('form#leave').submit(function(event) {
+        socket.emit('loadNewHost', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('leave', {user: sessionStorage.getItem('playerId'),
             lobbyName: sessionStorage.getItem('lobbyName')});
+        localStorage.clear();
         return false;
     });
     $('form#send_room').submit(function(event) {

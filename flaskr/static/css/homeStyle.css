@@ -24,6 +24,14 @@ h1 {
     cursor: pointer;
 }
 
+.smallFont {
+    font-size: 20px;
+}
+
+.largeFont {
+    font-size: 40px
+}
+
 .card {
     width: 200px;
 }
