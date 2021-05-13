@@ -7,14 +7,9 @@ $(document).ready(function() {
     socket.on('connect', function() {
         socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
-        if (sessionStorage.getItem('isJudge') != 'true') {
-            document.getElementById('answerMark1').disabled = true;
-            document.getElementById('answerMark2').disabled = true;
-            document.getElementById('answerMark3').disabled = true;
-            document.getElementById('answerMark4').disabled = true;
-            document.getElementById('answerMark5').disabled = true;
-            document.getElementById('answerMark6').disabled = true;
-            document.getElementById('chooseAnswer').style.display = 'none';
+        socket.emit('loadWinningStatus', {lobbyName: sessionStorage.getItem('lobbyName'), playerId: sessionStorage.getItem('playerId')});
+        if (sessionStorage.getItem('isHost') != 'true') {
+            document.getElementById('return').style.display = 'none'
         }
     });
 
@@ -40,6 +35,26 @@ $(document).ready(function() {
         console.log('works');
         window.location.href = destination;
         socket.emit('disconnect_request');
+    });
+
+    socket.on('displayPlacement', function(info) {
+        if (info['winner'] == true) {
+            document.getElementById("heading").innerHTML = 'YOU WIN!'
+        } else {
+            document.getElementById("heading").innerHTML = 'YOU LOSE!'
+        }
+    });
+
+    $('form#return').submit(function(event) {
+        socket.emit('returnToMenu', sessionStorage.getItem('lobbyName'));
+        return false;
+    });
+
+    $('form#leave').submit(function(event) {
+        sessionStorage.setItem('gotPrompts', false);
+        socket.emit('leaveGame', {lobbyName: sessionStorage.getItem('lobbyName'), 
+            playerId: sessionStorage.getItem('playerId')});
+        return false;
     });
 
     document.getElementById('playerName').innerHTML = sessionStorage.getItem('playerName')

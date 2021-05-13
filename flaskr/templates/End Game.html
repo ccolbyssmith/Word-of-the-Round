@@ -10,13 +10,23 @@
 </head>
 	
 <body>
-	<h1>End of Game</h1>
+	<h1 id="heading">End of Game</h1>
 	<div class="center largeFont" id="playerScores"></div>
-	<form id="start" method="POST" action='#'>
-		<br><br><br><br>
-		Do you want to return to the lobby? <button class="button" name="yesbuttonreturntolobby" value="Yes!" type="submit">Yes!</button>
+	<br>
+	<span class="large-br"></span>
+	<br>
+	<span class="large-br"></span>
+	<br>
+	<span class="large-br"></span>
+	<form id="return" method="POST" action='#'>
+		<div class="center">Do you want to return to the lobby?</div>
+		<br><br>
+		<button class="center button" name="yesbuttonreturntolobby" value="Yes!" type="submit">Yes!</button>
 	</form>
 	<div class="top-left" id="playerName"></div>
+	<form id="leave" method="POST" action='#' class="bottom-left">
+		<input type="submit" value="Leave Room">
+	</form>
 </body>
 	
 </html>

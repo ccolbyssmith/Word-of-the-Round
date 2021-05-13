@@ -48,6 +48,18 @@ class DataManipulator:
 		data[lobbyName]['players'] = json.dumps(playerList)
 		self.writeData(data)
 
+	def endGame(self, lobbyName):
+		data = self.loadData()
+		data[lobbyName]['started'] = False
+		data[lobbyName].pop('settings')
+		playerList = json.loads(data[lobbyName]['players'])
+		for player in playerList:
+			playerLocation = self.findPlayerLocation(player['playerID'])[1]
+			playerList[playerLocation].pop('score')
+			playerList[playerLocation].pop('judge')
+		data[lobbyName]['players'] = json.dumps(playerList)
+		self.writeData(data)
+
 	def findPlayerLocation(self, soughtPlayerID):
 		print(soughtPlayerID)
 		data = self.loadData()
@@ -122,7 +134,16 @@ class DataManipulator:
 			if player['judge'] == True:
 				return player['playerID']
 
+	def isJudge(self, playerID):
+		data = self.loadData()
+		playerLocation = self.findPlayerLocation(playerID)
+		lobbyName = playerLocation[0]
+		playerPosition = playerLocation[1]
+		playerList = json.loads(data[lobbyName]['players'])
+		return playerList[playerPosition]['judge']
+
 	def newJudge(self, lobbyName):
+		print('gettingNewJudge')
 		data = self.loadData()
 		playerList = self.loadPlayerList(lobbyName)
 		for player in playerList:
@@ -133,6 +154,7 @@ class DataManipulator:
 					playerList[playerLocation + 1]['judge'] = True
 				else:
 					playerList[0]['judge'] = True
+				break
 		data[lobbyName]['players'] = json.dumps(playerList)
 		self.writeData(data)
 

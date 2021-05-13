@@ -113,16 +113,27 @@ class CardHandler:
 		chosenCards = {}
 		with open(self.chosenCardLocation, 'r') as read_file:
 			chosenCards = json.load(read_file)
-		chosenCards.pop(lobby)
-		with open(self.chosenCardLocation, 'w') as write_file:
-			json.dump(chosenCards, write_file)
+		if lobby in chosenCards:
+			chosenCards.pop(lobby)
+			with open(self.chosenCardLocation, 'w') as write_file:
+				json.dump(chosenCards, write_file)
 
 		currentCards = {}
 		with open(self.currentCardLocation, 'r') as read_file:
 			currentCards = json.load(read_file)
-		currentCards.pop(lobby)
-		with open(self.currentCardLocation, 'w') as write_file:
-			json.dump(currentCards, write_file)
+		if lobby in currentCards:
+			currentCards.pop(lobby)
+			with open(self.currentCardLocation, 'w') as write_file:
+				json.dump(currentCards, write_file)
+
+	def deleteLobby(self, lobby):
+		decks = {}
+		with open(self.write_fileLocation, 'r') as read_file:
+			deck = json.load(read_file)
+		if lobby in decks:
+			decks.pop(lobby)
+			with open(self.write_fileLocation, 'w') as write_file:
+				json.dump(decks, write_file)
 
 class AnswerHandler:
 	def __init__(self):
@@ -156,6 +167,7 @@ class AnswerHandler:
 		answers = {}
 		with open(self.fileLocation, 'r') as read_file:
 			answers = json.load(read_file)
-		answers.pop(lobby)
-		with open(self.fileLocation, 'w') as write_file:
-			json.dump(answers, write_file)
+		if lobby in answers:
+			answers.pop(lobby)
+			with open(self.fileLocation, 'w') as write_file:
+				json.dump(answers, write_file)

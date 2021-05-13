@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -12,12 +12,12 @@
 	
 <body>
 	<h1>Choosing Answer</h1>
-	<span class="medium-br"></span>
+	<span class="small-br"></span>
 	<p align="left">
 		<div class="smallFont" id="Prompt"></div>
 		<br>
 		<div class="smallFont" id="Word"></div>
-		<br><br><br><br>
+		<br><br>
 		Now, please select the best player response:
 	</p>
 	<form id="chooseWord" method="POST" action='#'>
@@ -28,7 +28,7 @@
 		<input class="right mark" type="radio" value="answerNumber3" name="answer" id="answerMark3" />
 		<label class="right button card smallFont" for="answerMark3" id="answerNumber3"></label>
 		<br>
-		<span class="medium-br"></span>
+		<span class="large-br"></span>
 		<input class="left mark" type="radio" value="answerNumber4" name="answer" id="answerMark4" />
 		<label class="left button card smallFont" for="answerMark4" id="answerNumber4"></label>
 		<input class="center mark" type="radio" value="answerNumber5" name="answer" id="answerMark5" />
@@ -36,6 +36,9 @@
 		<input class="right mark" type="radio" value="answerNumber6" name="answer" id="answerMark6" />
 		<label class="right button card smallFont" for="answerMark6" id="answerNumber6"></label>
 	</form>
+	<br>
+	<span class="medium-br"></span>
+	<br>
 	<span class="medium-br"></span>
 	<form id="chooseAnswer" method="POST" action='#'>
 		<button class="center button" name="nextPhaseButton" value="submittedPrompts" type="submit">Submit</button>

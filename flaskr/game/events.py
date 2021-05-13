@@ -49,7 +49,7 @@ def loadInfo(identification):
     settings = dataHelper.returnSettings(identification['lobbyName'])
     judgeId = dataHelper.getJudge(identification['lobbyName'])
     settings['judgeId'] = judgeId
-    emit('getInfo', settings, to=identification['lobbyName'])
+    emit('getInfo', settings)
 
 @socketio.event
 def loadPlayerScores(identification):
@@ -100,25 +100,51 @@ def choseAnswer(info):
     promptHandler.finishRound(info['lobbyName'])
     wordHandler.finishRound(info['lobbyName'])
     answerHandler.finishRound(info['lobbyName'])
-    if winningPlayer['score'] == 3:
+    if str(winningPlayer['score']) == dataHelper.returnSettings(info['lobbyName'])['win_data']:
         destination = url_for('game.displayEndGame')
         emit('redirect', destination, to=info['lobbyName'])
     else:
         dataHelper.newJudge(info['lobbyName'])
         destination = url_for('game.displayPhase1')
         emit('redirect', destination, to=info['lobbyName'])
-        
 
+@socketio.event
+def loadWinningStatus(info):
+    winningPlayer = dataHelper.returnWinningPlayer(info['lobbyName'])
+    if info['playerId'] == winningPlayer['playerID']:
+        emit('displayPlacement', {'winner': True})
+    else:
+        emit('displayPlacement', {'winner': False})
+
+@socketio.event
+def returnToMenu(lobbyName):
+    promptHandler.deleteLobby(lobbyName)
+    wordHandler.deleteLobby(lobbyName)
+    dataHelper.endGame(lobbyName)
+    destination = url_for('home.displayLobby')
+    emit('redirect', destination, to=lobbyName)
+    
+        
 @socketio.event
 def leaveGame(info):
     print('Client Left Room')
     session['receive_count'] = session.get('receive_count', 0) + 1
     leave_room(info['lobbyName'])
-    destination = url_for('home.displayHomePage')
-    dataHelper.deletePlayer(info['playerId'])
-    if dataHelper.returnPlayerCount(info['lobbyName']) == 0:
-        dataHelper.deleteLobby(info['lobbyName'])
+    if dataHelper.returnPlayerCount(info['lobbyName']) != 3:
+        if dataHelper.isJudge(info['playerId']):
+            dataHelper.newJudge(info['lobbyName'])
+            destination = url_for('game.displayPhase1')
+            emit('redirect', destination, to=info['lobbyName'])
     else:
-        host = dataHelper.getHost(info['lobbyName'])
-        emit("newHost", host, to=info['lobbyName'])
-    emit('redirect', destination)
+        promptHandler.deleteLobby(info['lobbyName'])
+        wordHandler.deleteLobby(info['lobbyName'])
+        promptHandler.finishRound(info['lobbyName'])
+        wordHandler.finishRound(info['lobbyName'])
+        answerHandler.finishRound(info['lobbyName'])
+        dataHelper.endGame(info['lobbyName'])
+        destination = url_for('home.displayLobby')
+        emit('redirect', destination, to=info['lobbyName'])
+    dataHelper.deletePlayer(info['playerId'])
+    host = dataHelper.getHost(info['lobbyName'])
+    emit("newHost", host, to=info['lobbyName'])
+    emit('redirect', url_for('home.displayHomePage'))

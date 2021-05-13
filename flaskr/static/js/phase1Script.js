@@ -7,12 +7,6 @@ $(document).ready(function() {
     socket.on('connect', function() {
         socket.emit('rejoin_lobby', sessionStorage.getItem('lobbyName'));
         console.log(sessionStorage.getItem('gotPrompts'))
-        if (sessionStorage.getItem('isJudge') == 'true' && sessionStorage.getItem('gotPrompts') != 'true') {
-            sessionStorage.setItem('gotPrompts', true);
-            socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
-        } else if (sessionStorage.getItem('gotPrompts') == 'true') {
-             socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
-        }
         socket.emit('loadInfo', {lobbyName: sessionStorage.getItem('lobbyName')});
         socket.emit('loadPlayerScores', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
@@ -21,12 +15,6 @@ $(document).ready(function() {
         console.log('drewPrompts')
         sessionStorage.setItem('gotPrompts', 'true');
         socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
-    });
-
-    socket.on('redirect', function(destination) {
-        console.log('works');
-        window.location.href = destination;
-        socket.emit('disconnect_request');
     });
 
     socket.on('displayPrompts', function(prompts) {
@@ -64,6 +52,16 @@ $(document).ready(function() {
     });
 
     socket.on('getInfo', function(info) {
+        if (sessionStorage.getItem('playerId') == info['judgeId'] && sessionStorage.getItem('gotPrompts') != 'true') {
+            sessionStorage.setItem('gotPrompts', true);
+            sessionStorage.setItem('isJudge', true);
+            socket.emit('drawPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
+        } else if (sessionStorage.getItem('gotPrompts') == 'true') {
+             socket.emit('loadPrompts', {lobbyName: sessionStorage.getItem('lobbyName')});
+        }
+        if (sessionStorage.getItem('playerId') != info['judgeId']) {
+            sessionStorage.setItem('isJudge', false);
+        }
         if (sessionStorage.getItem('playerId') != info['judgeId']) {
             document.getElementById('prompt1Mark').disabled = true;
             document.getElementById('prompt2Mark').disabled = true;
@@ -76,7 +74,6 @@ $(document).ready(function() {
     });
 
     $('form#leave').submit(function(event) {
-        sessionStorage.setItem('gotPrompts', false);
         socket.emit('leaveGame', {lobbyName: sessionStorage.getItem('lobbyName'), 
             playerId: sessionStorage.getItem('playerId')});
         return false;
