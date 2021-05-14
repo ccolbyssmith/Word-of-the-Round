@@ -9,6 +9,19 @@
 
 <body>
     <h1><img src="{{url_for('static', filename='Logo.png')}}" align="center" /></h1>
+	
+<center>
+	<br> 
+<p> Word of the Round is an exciting game that encourages creativity and competition among family and friend groups.
+	<br> <br>	
+  Each round, players will have multiple lines to respond to the judge’s chosen prompt. 
+	<br> <br>
+The only catch… they must incorporate the judge’s chosen word, the Word of the Round, into their response. 
+<br> <br>
+Have fun, and see where your imagination takes you!
+
+
+</center>
     <span class="large-br"></span>
     <form action="{{ url_for('home.readHomeButtons') }}" method="post">
         <button class="center button" name="joinGameButton" value="joinGame">Join Game</button>
@@ -16,5 +29,6 @@
         <span class="large-br"></span>
         <button class="center button" name="createGameButton" value="createGame">Create Game</button>
     </form>
+</p>
 </body>
 </html>
