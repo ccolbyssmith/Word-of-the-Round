@@ -9,6 +9,7 @@ $(document).ready(function() {
     // server is established.
     socket.on('connect', function() {
         socket.emit('join_lobby', {playerId: sessionStorage.getItem('playerId')});
+        socket.emit('loadNewHost', {lobbyName: sessionStorage.getItem('lobbyName')});
     });
 
     // Event handler for server sent data.
